@@ -5,6 +5,7 @@ description: Commands for WSN by SamTech
 author: SamTech
 website: https://Sam-Tech.net
 api-version: '1.21'
+softdepend: [Vault, PlaceholderAPI]
 commands:
   #game mode shortner
   gmc:
@@ -32,3 +33,14 @@ commands:
   r:
     description: Reply to the last received private message
     usage: /<command> <message>
+  #econ
+  pay:
+    description: Pay another player
+    usage: /<command> <player> <amount>
+  balance:
+    description: Check your balance
+    usage: /<command>
+    aliases: [ bal ]
+  withdraw:
+    description: Withdraw money from your account
+    usage: /<command> <amount>

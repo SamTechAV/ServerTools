@@ -36,3 +36,13 @@ replyUsage: "&cUsage: /r <message>"
 noOneToReplyTo: "&cYou have no one to reply to."
 msgFormatSender: "&7[&cme &7-> &c%recipient%&7] &f%message%"
 msgFormatRecipient: "&7[&c%sender% &7-> &cme&7] &f%message%"
+
+# Economy messages
+payUsage: "&cUsage: /pay <player> <amount>"
+invalidAmount: "&cInvalid amount. Please enter a valid positive number."
+paymentSent: "&aYou sent %amount% to %player%."
+paymentReceived: "&aYou received %amount% from %player%."
+insufficientFunds: "&cYou don't have enough money to make this payment."
+balanceMessage: "&aYour balance: %balance%"
+withdrawUsage: "&cUsage: /withdraw <amount>"
+withdrawSuccess: "&aYou withdrew %amount%. New balance: %balance%"

@@ -1,6 +1,5 @@
 package org.yes.ServerTools;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -10,9 +9,11 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,6 +21,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -30,44 +33,47 @@ public class ServerTools extends JavaPlugin implements Listener {
     private final Map<UUID, UUID> tpaRequests = new HashMap<>();
     private final Map<UUID, UUID> tpahereRequests = new HashMap<>();
     private final Map<UUID, UUID> lastMessageSender = new HashMap<>();
+    private File economyFile;
+    private FileConfiguration economyConfig;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
         config = getConfig();
         getServer().getPluginManager().registerEvents(this, this);
-        getLogger().info("ServerTools with TPA system, clickable chat interactions, and direct messaging enabled.");
 
-        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) {
-            getLogger().warning("PlaceholderAPI is not installed. Some placeholders will not work.");
-        } else {
-            getLogger().info("PlaceholderAPI found and hooked!");
+        // Initialize economy
+        economyFile = new File(getDataFolder(), "economy.yml");
+        if (!economyFile.exists()) {
+            saveResource("economy.yml", false);
         }
+        economyConfig = YamlConfiguration.loadConfiguration(economyFile);
+
+        getLogger().info("ServerTools with TPA system, clickable chat interactions, direct messaging, and integrated economy features enabled.");
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         String joinMessage = config.getString("joinMessage", "&a%player_name% has joined the server!");
-        joinMessage = replacePlaceholders(player, joinMessage);
+        joinMessage = joinMessage.replace("%player_name%", player.getName());
         event.joinMessage(parseColoredMessage(joinMessage));
+
+        // Initialize player's balance if not exists
+        if (!economyConfig.contains(player.getUniqueId().toString())) {
+            economyConfig.set(player.getUniqueId().toString(), 0.0);
+            saveEconomyConfig();
+        }
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         String quitMessage = config.getString("quitMessage", "&c%player_name% has left the server.");
-        quitMessage = replacePlaceholders(player, quitMessage);
+        quitMessage = quitMessage.replace("%player_name%", player.getName());
         event.quitMessage(parseColoredMessage(quitMessage));
         tpaRequests.remove(player.getUniqueId());
         tpahereRequests.remove(player.getUniqueId());
-    }
-
-    private String replacePlaceholders(Player player, String message) {
-        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            return PlaceholderAPI.setPlaceholders(player, message);
-        }
-        return message.replace("%player_name%", player.getName());
     }
 
     @Override
@@ -101,8 +107,123 @@ public class ServerTools extends JavaPlugin implements Listener {
                 return handleMessageCommand(player, args);
             case "r":
                 return handleReplyCommand(player, args);
+            case "pay":
+                return handlePayCommand(player, args);
+            case "balance":
+            case "bal":
+                return handleBalanceCommand(player);
+            case "withdraw":
+                return handleWithdrawCommand(player, args);
             default:
                 return false;
+        }
+    }
+
+    private boolean handlePayCommand(Player sender, String[] args) {
+        if (args.length != 2) {
+            sender.sendMessage(parseColoredMessage(config.getString("payUsage", "&cUsage: /pay <player> <amount>")));
+            return true;
+        }
+
+        Player target = Bukkit.getPlayer(args[0]);
+        if (target == null || !target.isOnline()) {
+            sender.sendMessage(parseColoredMessage(config.getString("playerNotFound", "&cPlayer not found or not online.")));
+            return true;
+        }
+
+        double amount;
+        try {
+            amount = Double.parseDouble(args[1]);
+        } catch (NumberFormatException e) {
+            sender.sendMessage(parseColoredMessage(config.getString("invalidAmount", "&cInvalid amount. Please enter a valid number.")));
+            return true;
+        }
+
+        if (amount <= 0) {
+            sender.sendMessage(parseColoredMessage(config.getString("invalidAmount", "&cInvalid amount. Please enter a positive number.")));
+            return true;
+        }
+
+        if (withdrawMoney(sender, amount)) {
+            depositMoney(target, amount);
+            sender.sendMessage(parseColoredMessage(config.getString("paymentSent", "&aYou sent %amount% to %player%.")
+                    .replace("%amount%", String.format("%.2f", amount))
+                    .replace("%player%", target.getName())));
+            target.sendMessage(parseColoredMessage(config.getString("paymentReceived", "&aYou received %amount% from %player%.")
+                    .replace("%amount%", String.format("%.2f", amount))
+                    .replace("%player%", sender.getName())));
+        } else {
+            sender.sendMessage(parseColoredMessage(config.getString("insufficientFunds", "&cYou don't have enough money to make this payment.")));
+        }
+
+        return true;
+    }
+
+    private boolean handleBalanceCommand(Player player) {
+        double balance = getBalance(player);
+        player.sendMessage(parseColoredMessage(config.getString("balanceMessage", "&aYour balance: %balance%")
+                .replace("%balance%", String.format("%.2f", balance))));
+        return true;
+    }
+
+    private boolean handleWithdrawCommand(Player player, String[] args) {
+        if (args.length != 1) {
+            player.sendMessage(parseColoredMessage(config.getString("withdrawUsage", "&cUsage: /withdraw <amount>")));
+            return true;
+        }
+
+        double amount;
+        try {
+            amount = Double.parseDouble(args[0]);
+        } catch (NumberFormatException e) {
+            player.sendMessage(parseColoredMessage(config.getString("invalidAmount", "&cInvalid amount. Please enter a valid number.")));
+            return true;
+        }
+
+        if (amount <= 0) {
+            player.sendMessage(parseColoredMessage(config.getString("invalidAmount", "&cInvalid amount. Please enter a positive number.")));
+            return true;
+        }
+
+        if (withdrawMoney(player, amount)) {
+            player.sendMessage(parseColoredMessage(config.getString("withdrawSuccess", "&aYou withdrew %amount%. New balance: %balance%")
+                    .replace("%amount%", String.format("%.2f", amount))
+                    .replace("%balance%", String.format("%.2f", getBalance(player)))));
+            // Here you would typically give the player a physical item representing the withdrawn money
+            // This could be a custom item, or you might integrate with another plugin that handles physical currency
+        } else {
+            player.sendMessage(parseColoredMessage(config.getString("insufficientFunds", "&cYou don't have enough money to withdraw this amount.")));
+        }
+
+        return true;
+    }
+
+    // Economy methods
+    private double getBalance(OfflinePlayer player) {
+        return economyConfig.getDouble(player.getUniqueId().toString(), 0.0);
+    }
+
+    private boolean withdrawMoney(OfflinePlayer player, double amount) {
+        double balance = getBalance(player);
+        if (balance >= amount) {
+            economyConfig.set(player.getUniqueId().toString(), balance - amount);
+            saveEconomyConfig();
+            return true;
+        }
+        return false;
+    }
+
+    private void depositMoney(OfflinePlayer player, double amount) {
+        double balance = getBalance(player);
+        economyConfig.set(player.getUniqueId().toString(), balance + amount);
+        saveEconomyConfig();
+    }
+
+    private void saveEconomyConfig() {
+        try {
+            economyConfig.save(economyFile);
+        } catch (IOException e) {
+            getLogger().severe("Could not save economy data!");
         }
     }
 
