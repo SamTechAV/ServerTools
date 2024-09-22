@@ -1,6 +1,6 @@
-name: BetterJoin
+name: Server-Tools
 version: '1.0'
-main: org.yes.betterJoin.BetterJoin
+main: org.yes.ServerTools.ServerTools
 description: Commands for WSN by SamTech
 author: SamTech
 website: https://Sam-Tech.net
@@ -24,3 +24,11 @@ commands:
     description: Accept a teleport request
   tpdeny:
     description: Deny a teleport request
+  #direct message
+  msg:
+    description: Send a private message to a player
+    usage: /<command> <player> <message>
+    aliases: [ tell, w ]
+  r:
+    description: Reply to the last received private message
+    usage: /<command> <message>

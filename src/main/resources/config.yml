@@ -29,3 +29,10 @@ tpahereAccepted: "&aYour teleport request was accepted. %target% is teleporting 
 tpahereRequestAccepted: "&aYou accepted %requester%'s request to teleport to them."
 tpRequestDenied: "&cYour teleport request was denied."
 tpDenyConfirmation: "&aYou denied the teleport request."
+
+# Direct messaging
+msgUsage: "&cUsage: /msg <player> <message>"
+replyUsage: "&cUsage: /r <message>"
+noOneToReplyTo: "&cYou have no one to reply to."
+msgFormatSender: "&7[&cme &7-> &c%recipient%&7] &f%message%"
+msgFormatRecipient: "&7[&c%sender% &7-> &cme&7] &f%message%"
