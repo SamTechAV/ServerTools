@@ -1,0 +1,26 @@
+name: BetterJoin
+version: '1.0'
+main: org.yes.betterJoin.BetterJoin
+description: Commands for WSN by SamTech
+author: SamTech
+website: https://Sam-Tech.net
+api-version: '1.21'
+commands:
+  #game mode shortner
+  gmc:
+    description: Change game mode to Creative
+  gms:
+    description: Change game mode to Survival
+  gmsp:
+    description: Change game mode to Spectator
+  gma:
+    description: Change game mode to Adventure
+  #tpa
+  tpa:
+    description: Send a teleport request to a player
+  tpahere:
+    description: Request a player to teleport to you
+  tpaccept:
+    description: Accept a teleport request
+  tpdeny:
+    description: Deny a teleport request

@@ -1,0 +1,31 @@
+# Customize the join message
+joinMessage: |
+  &a%player_name% has joined the server!
+  Discord: https://discord.yourserver.com
+
+# Customize the quit message
+quitMessage: |
+  &c%player_name% has left the server.
+  We hope to see you again soon!
+
+# Game mode messages
+gmcMessage: "&bYou are now in Creative mode."
+gmsMessage: "&aYou are now in Survival mode."
+gmspMessage: "&7You are now in Spectator mode."
+gmaMessage: "&6You are now in Adventure mode."
+
+# TPA accept/deny symbols and messages
+tpaAcceptSymbol: " ✔ "
+tpaAcceptSymbolColor: "GREEN"
+tpaAcceptHoverText: "&aClick to accept"
+tpaDenySymbol: " ✘ "
+tpaDenySymbolColor: "RED"
+tpaDenyHoverText: "&cClick to deny"
+
+# Customize the messages sent when a teleport request is accepted or denied
+tpaAccepted: "&aYour teleport request was accepted. Teleporting to %target%."
+tpaRequestAccepted: "&aYou accepted %requester%'s teleport request."
+tpahereAccepted: "&aYour teleport request was accepted. %target% is teleporting to you."
+tpahereRequestAccepted: "&aYou accepted %requester%'s request to teleport to them."
+tpRequestDenied: "&cYour teleport request was denied."
+tpDenyConfirmation: "&aYou denied the teleport request."
