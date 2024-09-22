@@ -23,9 +23,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ServerTools extends JavaPlugin implements Listener {
 
@@ -78,12 +77,12 @@ public class ServerTools extends JavaPlugin implements Listener {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player) && !command.getName().equalsIgnoreCase("addmoney") && !command.getName().equalsIgnoreCase("removemoney")) {
             sender.sendMessage(Component.text("This command can only be used by players!").color(NamedTextColor.RED));
             return true;
         }
 
-        Player player = (Player) sender;
+        Player player = (sender instanceof Player) ? (Player) sender : null;
         switch (command.getName().toLowerCase()) {
             case "gmc":
                 return handleGameModeCommand(player, GameMode.CREATIVE, "gmcMessage");
@@ -114,9 +113,117 @@ public class ServerTools extends JavaPlugin implements Listener {
                 return handleBalanceCommand(player);
             case "withdraw":
                 return handleWithdrawCommand(player, args);
+            case "baltop":
+                return handleBalTopCommand(sender);
+            case "addmoney":
+                return handleAddMoneyCommand(sender, args);
+            case "removemoney":
+                return handleRemoveMoneyCommand(sender, args);
             default:
                 return false;
         }
+    }
+
+    private boolean handleRemoveMoneyCommand(CommandSender sender, String[] args) {
+        if (!sender.hasPermission("servertools.removemoney")) {
+            sender.sendMessage(parseColoredMessage(config.getString("noPermission", "&cYou don't have permission to use this command.")));
+            return true;
+        }
+
+        if (args.length != 2) {
+            sender.sendMessage(parseColoredMessage(config.getString("removeMoneyUsage", "&cUsage: /removemoney <player> <amount>")));
+            return true;
+        }
+
+        Player target = Bukkit.getPlayer(args[0]);
+        if (target == null) {
+            sender.sendMessage(parseColoredMessage(config.getString("playerNotFound", "&cPlayer not found or not online.")));
+            return true;
+        }
+
+        double amount;
+        try {
+            amount = Double.parseDouble(args[1]);
+        } catch (NumberFormatException e) {
+            sender.sendMessage(parseColoredMessage(config.getString("invalidAmount", "&cInvalid amount. Please enter a valid number.")));
+            return true;
+        }
+
+        if (amount <= 0) {
+            sender.sendMessage(parseColoredMessage(config.getString("invalidAmount", "&cInvalid amount. Please enter a positive number.")));
+            return true;
+        }
+
+        if (withdrawMoney(target, amount)) {
+            sender.sendMessage(parseColoredMessage(config.getString("moneyRemoved", "&aRemoved %amount% from %player%'s balance.")
+                    .replace("%amount%", String.format("%.2f", amount))
+                    .replace("%player%", target.getName())));
+            target.sendMessage(parseColoredMessage(config.getString("moneyDeducted", "&a%amount% has been deducted from your balance.")
+                    .replace("%amount%", String.format("%.2f", amount))));
+        } else {
+            sender.sendMessage(parseColoredMessage(config.getString("insufficientFunds", "&c%player% doesn't have enough money.")
+                    .replace("%player%", target.getName())));
+        }
+
+        return true;
+    }
+
+    private boolean handleBalTopCommand(CommandSender sender) {
+        List<Map.Entry<UUID, Double>> topBalances = economyConfig.getKeys(false).stream()
+                .map(key -> new AbstractMap.SimpleEntry<>(UUID.fromString(key), economyConfig.getDouble(key)))
+                .sorted(Map.Entry.<UUID, Double>comparingByValue().reversed())
+                .limit(10)
+                .collect(Collectors.toList());
+
+        sender.sendMessage(parseColoredMessage("&6Top 10 Balances:"));
+        for (int i = 0; i < topBalances.size(); i++) {
+            UUID playerUUID = topBalances.get(i).getKey();
+            double balance = topBalances.get(i).getValue();
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerUUID);
+            String playerName = offlinePlayer.getName() != null ? offlinePlayer.getName() : "Unknown";
+            sender.sendMessage(parseColoredMessage(String.format("&e%d. &f%s: &a$%.2f", i + 1, playerName, balance)));
+        }
+        return true;
+    }
+
+    private boolean handleAddMoneyCommand(CommandSender sender, String[] args) {
+        if (!sender.hasPermission("servertools.addmoney")) {
+            sender.sendMessage(parseColoredMessage(config.getString("noPermission", "&cYou don't have permission to use this command.")));
+            return true;
+        }
+
+        if (args.length != 2) {
+            sender.sendMessage(parseColoredMessage(config.getString("addMoneyUsage", "&cUsage: /addmoney <player> <amount>")));
+            return true;
+        }
+
+        Player target = Bukkit.getPlayer(args[0]);
+        if (target == null) {
+            sender.sendMessage(parseColoredMessage(config.getString("playerNotFound", "&cPlayer not found or not online.")));
+            return true;
+        }
+
+        double amount;
+        try {
+            amount = Double.parseDouble(args[1]);
+        } catch (NumberFormatException e) {
+            sender.sendMessage(parseColoredMessage(config.getString("invalidAmount", "&cInvalid amount. Please enter a valid number.")));
+            return true;
+        }
+
+        if (amount <= 0) {
+            sender.sendMessage(parseColoredMessage(config.getString("invalidAmount", "&cInvalid amount. Please enter a positive number.")));
+            return true;
+        }
+
+        depositMoney(target, amount);
+        sender.sendMessage(parseColoredMessage(config.getString("moneyAdded", "&aAdded %amount% to %player%'s balance.")
+                .replace("%amount%", String.format("%.2f", amount))
+                .replace("%player%", target.getName())));
+        target.sendMessage(parseColoredMessage(config.getString("moneyReceived", "&a%amount% has been added to your balance.")
+                .replace("%amount%", String.format("%.2f", amount))));
+
+        return true;
     }
 
     private boolean handlePayCommand(Player sender, String[] args) {

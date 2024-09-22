@@ -44,3 +44,20 @@ commands:
   withdraw:
     description: Withdraw money from your account
     usage: /<command> <amount>
+  baltop:
+    description: Shows top 10 player balances
+    usage: /baltop
+  addmoney:
+    description: Adds money to a player's balance
+    usage: /addmoney <player> <amount>
+  removemoney:
+      description: Removes money from a player's balance
+      usage: /removemoney <player> <amount
+
+permissions:
+  servertools.addmoney:
+    description: Allows adding money to a player's balance
+    default: op
+  servertools.removemoney:
+    description: Allows removing money from a player's balance
+    default: op

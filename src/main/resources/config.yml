@@ -2,12 +2,12 @@
 joinMessage: |
   &a%player_name% has joined the server!
   Discord: https://discord.yourserver.com
-
+#end pipe
 # Customize the quit message
 quitMessage: |
   &c%player_name% has left the server.
   We hope to see you again soon!
-
+#end pipe
 # Game mode messages
 gmcMessage: "&bYou are now in Creative mode."
 gmsMessage: "&aYou are now in Survival mode."
