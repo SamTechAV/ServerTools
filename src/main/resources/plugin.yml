@@ -5,59 +5,147 @@ description: Commands for WSN by SamTech
 author: SamTech
 website: https://Sam-Tech.net
 api-version: '1.21'
-softdepend: [Vault, PlaceholderAPI]
+depend: [PlaceholderAPI, LuckPerms]
+softdepend: [Vault]
+
 commands:
-  #game mode shortner
+  # Game mode shortner
   gmc:
     description: Change game mode to Creative
+    permission: servertools.gamemode.creative
   gms:
     description: Change game mode to Survival
+    permission: servertools.gamemode.survival
   gmsp:
     description: Change game mode to Spectator
+    permission: servertools.gamemode.spectator
   gma:
     description: Change game mode to Adventure
-  #tpa
+    permission: servertools.gamemode.adventure
+  # TPA
   tpa:
     description: Send a teleport request to a player
+    permission: servertools.tpa.send
   tpahere:
     description: Request a player to teleport to you
+    permission: servertools.tpa.sendhere
   tpaccept:
     description: Accept a teleport request
+    permission: servertools.tpa.accept
   tpdeny:
     description: Deny a teleport request
-  #direct message
+    permission: servertools.tpa.deny
+  # Direct message
   msg:
     description: Send a private message to a player
     usage: /<command> <player> <message>
-    aliases: [ tell, w ]
+    aliases: [tell, w]
+    permission: servertools.message.send
   r:
     description: Reply to the last received private message
     usage: /<command> <message>
-  #econ
+    permission: servertools.message.reply
+  # Economy
   pay:
     description: Pay another player
     usage: /<command> <player> <amount>
+    permission: servertools.economy.pay
   balance:
     description: Check your balance
     usage: /<command>
-    aliases: [ bal ]
+    aliases: [bal]
+    permission: servertools.economy.balance
   withdraw:
     description: Withdraw money from your account
     usage: /<command> <amount>
+    permission: servertools.economy.withdraw
   baltop:
     description: Shows top 10 player balances
     usage: /baltop
+    permission: servertools.economy.baltop
   addmoney:
     description: Adds money to a player's balance
     usage: /addmoney <player> <amount>
+    permission: servertools.economy.addmoney
   removemoney:
-      description: Removes money from a player's balance
-      usage: /removemoney <player> <amount
+    description: Removes money from a player's balance
+    usage: /removemoney <player> <amount>
+    permission: servertools.economy.removemoney
 
 permissions:
-  servertools.addmoney:
+  servertools.gamemode.*:
+    description: Allows access to all gamemode commands
+    children:
+      servertools.gamemode.creative: true
+      servertools.gamemode.survival: true
+      servertools.gamemode.spectator: true
+      servertools.gamemode.adventure: true
+  servertools.gamemode.creative:
+    description: Allows changing to creative mode
+    default: op
+  servertools.gamemode.survival:
+    description: Allows changing to survival mode
+    default: op
+  servertools.gamemode.spectator:
+    description: Allows changing to spectator mode
+    default: op
+  servertools.gamemode.adventure:
+    description: Allows changing to adventure mode
+    default: op
+  servertools.tpa.*:
+    description: Allows access to all TPA commands
+    children:
+      servertools.tpa.send: true
+      servertools.tpa.sendhere: true
+      servertools.tpa.accept: true
+      servertools.tpa.deny: true
+  servertools.tpa.send:
+    description: Allows sending teleport requests
+    default: true
+  servertools.tpa.sendhere:
+    description: Allows sending teleport-here requests
+    default: true
+  servertools.tpa.accept:
+    description: Allows accepting teleport requests
+    default: true
+  servertools.tpa.deny:
+    description: Allows denying teleport requests
+    default: true
+  servertools.message.*:
+    description: Allows access to all messaging commands
+    children:
+      servertools.message.send: true
+      servertools.message.reply: true
+  servertools.message.send:
+    description: Allows sending private messages
+    default: true
+  servertools.message.reply:
+    description: Allows replying to private messages
+    default: true
+  servertools.economy.*:
+    description: Allows access to all economy commands
+    children:
+      servertools.economy.pay: true
+      servertools.economy.balance: true
+      servertools.economy.withdraw: true
+      servertools.economy.baltop: true
+      servertools.economy.addmoney: true
+      servertools.economy.removemoney: true
+  servertools.economy.pay:
+    description: Allows paying other players
+    default: true
+  servertools.economy.balance:
+    description: Allows checking balance
+    default: true
+  servertools.economy.withdraw:
+    description: Allows withdrawing money
+    default: true
+  servertools.economy.baltop:
+    description: Allows viewing top balances
+    default: true
+  servertools.economy.addmoney:
     description: Allows adding money to a player's balance
     default: op
-  servertools.removemoney:
+  servertools.economy.removemoney:
     description: Allows removing money from a player's balance
     default: op
