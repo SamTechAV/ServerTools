@@ -1,5 +1,5 @@
 name: Server-Tools
-version: '1.0'
+version: '2.0'
 main: org.yes.ServerTools.ServerTools
 description: Commands for WSN by SamTech
 author: SamTech

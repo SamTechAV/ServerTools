@@ -1,48 +1,61 @@
-# Customize the join message
-joinMessage: |
-  &a%player_name% has joined the server!
-  Discord: https://discord.yourserver.com
-#end pipe
-# Customize the quit message
-quitMessage: |
-  &c%player_name% has left the server.
-  We hope to see you again soon!
-#end pipe
+joinandleave:
+  # Customize the join message
+  joinMessage: |
+    &a%player_name% has joined the server!
+    Discord: https://discord.yourserver.com
+  quitMessage: |
+    &c%player_name% has left the server.
+    We hope to see you again soon!
+
 # Game mode messages
-gmcMessage: "&bYou are now in Creative mode."
-gmsMessage: "&aYou are now in Survival mode."
-gmspMessage: "&7You are now in Spectator mode."
-gmaMessage: "&6You are now in Adventure mode."
+gamemode:
+  gmcMessage: "&bYou are now in Creative mode."
+  gmsMessage: "&aYou are now in Survival mode."
+  gmspMessage: "&7You are now in Spectator mode."
+  gmaMessage: "&6You are now in Adventure mode."
 
-# TPA accept/deny symbols and messages
-tpaAcceptSymbol: " ✔ "
-tpaAcceptSymbolColor: "GREEN"
-tpaAcceptHoverText: "&aClick to accept"
-tpaDenySymbol: " ✘ "
-tpaDenySymbolColor: "RED"
-tpaDenyHoverText: "&cClick to deny"
+tpa:
+  # TPA accept/deny symbols and messages
+  tpaAcceptSymbol: " ✔ "
+  tpaAcceptSymbolColor: "GREEN"
+  tpaAcceptHoverText: "&aClick to accept"
+  tpaDenySymbol: " ✘ "
+  tpaDenySymbolColor: "RED"
+  tpaDenyHoverText: "&cClick to deny"
+  
+  # Customize the messages sent when a teleport request is accepted or denied
+  tpaAccepted: "&aYour teleport request was accepted. Teleporting to %target%."
+  tpaRequestAccepted: "&aYou accepted %requester%'s teleport request."
+  tpahereAccepted: "&aYour teleport request was accepted. %target% is teleporting to you."
+  tpahereRequestAccepted: "&aYou accepted %requester%'s request to teleport to them."
+  tpRequestDenied: "&cYour teleport request was denied."
+  tpDenyConfirmation: "&aYou denied the teleport request."
 
-# Customize the messages sent when a teleport request is accepted or denied
-tpaAccepted: "&aYour teleport request was accepted. Teleporting to %target%."
-tpaRequestAccepted: "&aYou accepted %requester%'s teleport request."
-tpahereAccepted: "&aYour teleport request was accepted. %target% is teleporting to you."
-tpahereRequestAccepted: "&aYou accepted %requester%'s request to teleport to them."
-tpRequestDenied: "&cYour teleport request was denied."
-tpDenyConfirmation: "&aYou denied the teleport request."
+directmessaging:
+  msgUsage: "&cUsage: /msg <player> <message>"
+  replyUsage: "&cUsage: /r <message>"
+  noOneToReplyTo: "&cYou have no one to reply to."
+  msgFormatSender: "&7[&cme &7-> &c%recipient%&7] &f%message%"
+  msgFormatRecipient: "&7[&c%sender% &7-> &cme&7] &f%message%"
 
-# Direct messaging
-msgUsage: "&cUsage: /msg <player> <message>"
-replyUsage: "&cUsage: /r <message>"
-noOneToReplyTo: "&cYou have no one to reply to."
-msgFormatSender: "&7[&cme &7-> &c%recipient%&7] &f%message%"
-msgFormatRecipient: "&7[&c%sender% &7-> &cme&7] &f%message%"
-
-# Economy messages
-payUsage: "&cUsage: /pay <player> <amount>"
-invalidAmount: "&cInvalid amount. Please enter a valid positive number."
-paymentSent: "&aYou sent %amount% to %player%."
-paymentReceived: "&aYou received %amount% from %player%."
-insufficientFunds: "&cYou don't have enough money to make this payment."
-balanceMessage: "&aYour balance: %balance%"
-withdrawUsage: "&cUsage: /withdraw <amount>"
-withdrawSuccess: "&aYou withdrew %amount%. New balance: %balance%"
+economy:
+  playerOnly: "&cThis command can only be used by players!"
+  noPermission: "&cYou don't have permission to use this command."
+  playerNotFound: "&cPlayer not found or not online."
+  invalidAmount: "&cInvalid amount. Please enter a positive number."
+  insufficientFunds: "&cInsufficient funds."
+  balanceUsage: "&cUsage: /balance [player]"
+  balanceMessage: "&a%player%'s balance: $%balance%"
+  payUsage: "&cUsage: /pay <player> <amount>"
+  paymentSent: "&aYou sent $%amount% to %player%."
+  paymentReceived: "&aYou received $%amount% from %player%."
+  balTopHeader: "&6===== Top 10 Balances ====="
+  balTopEntry: "&e%position%. &f%player%: &a$%balance%"
+  addMoneyUsage: "&cUsage: /addmoney <player> <amount>"
+  moneyAdded: "&aAdded $%amount% to %player%'s balance."
+  moneyReceived: "&a$%amount% has been added to your balance."
+  removeMoneyUsage: "&cUsage: /removemoney <player> <amount>"
+  moneyRemoved: "&aRemoved $%amount% from %player%'s balance."
+  moneyDeducted: "&a$%amount% has been deducted from your balance."
+  withdrawUsage: "&cUsage: /withdraw <amount>"
+  withdrawSuccess: "&aYou withdrew %amount%. New balance: %balance%"
