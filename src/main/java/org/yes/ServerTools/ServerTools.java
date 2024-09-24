@@ -1,17 +1,23 @@
 package org.yes.ServerTools;
 
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.yes.ServerTools.commands.*;
 import org.yes.ServerTools.listeners.JoinLeaveListener;
 import org.yes.ServerTools.utils.EconomyManager;
+import org.yes.ServerTools.utils.BankNoteManager;
 import org.yes.ServerTools.ui.TabMenuManager;
 
 import java.io.File;
 
-public class ServerTools extends JavaPlugin {
+public class ServerTools extends JavaPlugin implements Listener {
     private FileConfiguration config;
     private EconomyManager economyManager;
+    private BankNoteManager bankNoteManager;
     private TabMenuManager tabMenuManager;
 
     @Override
@@ -32,11 +38,15 @@ public class ServerTools extends JavaPlugin {
         }
         economyManager = new EconomyManager(economyFile);
 
+        // Initialize bank note manager
+        bankNoteManager = new BankNoteManager(this);
+
         // Initialize tab menu manager
         tabMenuManager = new TabMenuManager(this);
 
         // Register event listeners
         getServer().getPluginManager().registerEvents(new JoinLeaveListener(this), this);
+        getServer().getPluginManager().registerEvents(this, this);
 
         // Register commands
         registerCommands();
@@ -60,6 +70,10 @@ public class ServerTools extends JavaPlugin {
 
     public EconomyManager getEconomyManager() {
         return economyManager;
+    }
+
+    public BankNoteManager getBankNoteManager() {
+        return bankNoteManager;
     }
 
     public void reloadPluginConfig() {
@@ -110,5 +124,19 @@ public class ServerTools extends JavaPlugin {
         getCommand("baltop").setExecutor(economyCommand);
         getCommand("addmoney").setExecutor(economyCommand);
         getCommand("removemoney").setExecutor(economyCommand);
+
+        // Fly command
+        getCommand("fly").setExecutor(new FlyCommand(this));
+
+    }
+
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        if (event.getItem() == null) return;
+        ItemStack item = event.getItem();
+        if (bankNoteManager.isBankNote(item)) {
+            event.setCancelled(true);
+            bankNoteManager.depositBankNote(event.getPlayer(), item);
+        }
     }
 }

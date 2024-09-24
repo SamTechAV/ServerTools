@@ -60,6 +60,15 @@ economy:
   moneyDeducted: "<green>$%amount% has been deducted from your balance."
   withdrawUsage: "<red>Usage: /withdraw <amount>"
   withdrawSuccess: "<green>You withdrew %amount%. New balance: %balance%"
+  banknote:
+    name: "<gold>%currency% Bank Note"
+    description: "<white>Right-click to deposit %amount% into your account."
+    lore:
+      - "<yellow>Amount: %amount%"
+      - "<gray>Right-click to deposit"
+    currency: "Dollar"
+    depositSuccess: "<green>Successfully deposited %amount% into your account."
+    depositFailed: "<red>Failed to deposit the bank note. Please try again."
 
 tab-menu:
   update-interval: 20 # Update interval in ticks (20 ticks = 1 second)
@@ -71,3 +80,9 @@ tab-menu:
     vip: "<green>"
     admin: "<red>"
     owner: "<dark_red>"
+
+fly:
+  playerOnly: "<red>This command can only be used by players!"
+  noPermission: "<red>You don't have permission to use this command."
+  enabled: "<green>Flight mode enabled."
+  disabled: "<red>Flight mode disabled."

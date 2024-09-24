@@ -71,6 +71,10 @@ commands:
     description: Removes money from a player's balance
     usage: /removemoney <player> <amount>
     permission: servertools.economy.removemoney
+  fly:
+    description: Toggle flight mode
+    usage: /<command>
+    aliases: [ togglefly ]
 
 permissions:
   servertools.gamemode.*:

@@ -7,9 +7,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.yes.ServerTools.ServerTools;
 import org.yes.ServerTools.utils.EconomyManager;
 import org.yes.ServerTools.utils.MessageUtil;
+import org.yes.ServerTools.utils.BankNoteManager;
 
 import java.util.*;
 
@@ -18,16 +20,17 @@ public class EconomyCommand implements CommandExecutor {
     private final ServerTools plugin;
     private final FileConfiguration config;
     private final EconomyManager economyManager;
+    private final BankNoteManager bankNoteManager;
 
     public EconomyCommand(ServerTools plugin) {
         this.plugin = plugin;
-        this.config = plugin.getPluginConfig();
+        this.config = plugin.getConfig();
         this.economyManager = plugin.getEconomyManager();
+        this.bankNoteManager = new BankNoteManager(plugin);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
         String commandName = command.getName().toLowerCase();
 
         switch (commandName) {
@@ -152,12 +155,18 @@ public class EconomyCommand implements CommandExecutor {
         }
 
         if (economyManager.withdrawMoney(player, amount)) {
+            ItemStack bankNote = bankNoteManager.createBankNote(amount);
             Map<String, String> placeholders = new HashMap<>();
             placeholders.put("%amount%", String.format("%.2f", amount));
             placeholders.put("%balance%", String.format("%.2f", economyManager.getBalance(player)));
 
-            sender.sendMessage(MessageUtil.parseMessage(sender, config.getString("economy.withdrawSuccess"), placeholders));
-            // Handle giving the player physical currency here if needed
+            if (player.getInventory().firstEmpty() != -1) {
+                player.getInventory().addItem(bankNote);
+                sender.sendMessage(MessageUtil.parseMessage(sender, config.getString("economy.withdrawSuccess"), placeholders));
+            } else {
+                player.getWorld().dropItemNaturally(player.getLocation(), bankNote);
+                sender.sendMessage(MessageUtil.parseMessage(sender, config.getString("economy.withdrawSuccess") + " The bank note was dropped at your feet.", placeholders));
+            }
         } else {
             sender.sendMessage(MessageUtil.parseMessage(sender, config.getString("economy.insufficientFunds"), null));
         }
@@ -272,4 +281,3 @@ public class EconomyCommand implements CommandExecutor {
         return true;
     }
 }
-
