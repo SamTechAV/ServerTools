@@ -74,7 +74,7 @@ tab-menu:
   update-interval: 20 # Update interval in ticks (20 ticks = 1 second)
   header: "<gold>Welcome to <gradient:red:blue>Your Server</gradient>!"
   footer: "<gray>Players online: <green>%server_online%</green>"
-  name-format: "<group_color><group_name> <white>| <player_name>"
+  name-format: "<group_color><group_name> <white>| "#Player name is their by defult no needs for the <player> tag
   group-colors:
     default: "<gray>"
     vip: "<green>"
