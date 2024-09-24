@@ -3,6 +3,13 @@
 ## Overview
 This plugin enhances Minecraft gameplay by providing various tools, including fly mode, economy management, teleport requests (TPA), and private messaging.
 
+## Requirements
+This plugin requires the following dependencies:
+
+- **PlaceholderAPI**: For dynamic placeholder support. Make sure to download the **Server** and **Player** expansions from the eCloud.
+- **Vault**: For economy management and permissions handling.
+- **LuckPerms**: For advanced permissions management.
+
 ## Features
 - **Fly Mode**: Toggle flight for players.
 - **Economy Management**: Handle in-game currency and transactions.
