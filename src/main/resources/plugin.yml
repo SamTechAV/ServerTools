@@ -9,7 +9,7 @@ depend: [PlaceholderAPI, LuckPerms]
 softdepend: [Vault]
 
 commands:
-  # Game mode shortner
+  # Game mode shortener
   gmc:
     description: Change game mode to Creative
     permission: servertools.gamemode.creative
@@ -71,10 +71,12 @@ commands:
     description: Removes money from a player's balance
     usage: /removemoney <player> <amount>
     permission: servertools.economy.removemoney
+  # Fly command
   fly:
     description: Toggle flight mode
     usage: /<command>
-    aliases: [ togglefly ]
+    aliases: [togglefly]
+    permission: servertools.fly
 
 permissions:
   servertools.gamemode.*:
@@ -152,4 +154,7 @@ permissions:
     default: op
   servertools.economy.removemoney:
     description: Allows removing money from a player's balance
+    default: op
+  servertools.fly:
+    description: Allows toggling flight mode
     default: op
