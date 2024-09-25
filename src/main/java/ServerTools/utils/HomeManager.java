@@ -20,7 +20,7 @@ public class HomeManager {
 
     public HomeManager(ServerTools plugin) {
         this.plugin = plugin;
-        homesFile = new File(plugin.getDataFolder(), "homes.yml");
+        homesFile = new File(plugin.getDataFolder(), "storage/homes.yml");
         if (!homesFile.exists()) {
             try {
                 homesFile.createNewFile();
