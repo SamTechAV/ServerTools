@@ -18,7 +18,7 @@ footer-frames:
   - "<gray>Store: <yellow>store.example.com</yellow>"
 
 # Name format in the tab list
-name-format: "<group_color><group_name> <white>| <player_name>"
+name-format: "<group_color><group_name> <white>| "
 
 # Group colors for tab names
 group-colors:
