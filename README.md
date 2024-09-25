@@ -24,19 +24,23 @@ This plugin requires the following dependencies:
 | `/gms`                     | Change game mode to Survival                        | `servertools.gamemode.survival`          |
 | `/gmsp`                    | Change game mode to Spectator                       | `servertools.gamemode.spectator`         |
 | `/gma`                     | Change game mode to Adventure                       | `servertools.gamemode.adventure`         |
-| `/tpa <player>`            | Send a teleport request to a player                | `servertools.tpa.send`                   |
-| `/tpahere <player>`        | Request a player to teleport to you                | `servertools.tpa.sendhere`               |
-| `/tpaccept`                | Accept a teleport request                           | `servertools.tpa.accept`                  |
+| `/tpa <player>`            | Send a teleport request to a player                 | `servertools.tpa.send`                   |
+| `/tpahere <player>`        | Request a player to teleport to you                 | `servertools.tpa.sendhere`               |
+| `/tpaccept`                | Accept a teleport request                           | `servertools.tpa.accept`                 |
 | `/tpdeny`                  | Deny a teleport request                             | `servertools.tpa.deny`                   |
-| `/msg <player> <message>`  | Send a private message to a player                 | `servertools.message.send`                |
-| `/r <message>`             | Reply to the last received private message          | `servertools.message.reply`               |
+| `/msg <player> <message>`  | Send a private message to a player                  | `servertools.message.send`               |
+| `/r <message>`             | Reply to the last received private message          | `servertools.message.reply`              |
 | `/pay <player> <amount>`   | Pay another player                                  | `servertools.economy.pay`                |
-| `/balance` or `/bal`      | Check your balance                                  | `servertools.economy.balance`             |
-| `/withdraw <amount>`       | Withdraw money from your account                    | `servertools.economy.withdraw`            |
+| `/balance` or `/bal`      | Check your balance                                   | `servertools.economy.balance`            |
+| `/withdraw <amount>`       | Withdraw money from your account                    | `servertools.economy.withdraw`           |
 | `/baltop`                  | Shows top 10 player balances                        | `servertools.economy.baltop`             |
-| `/addmoney <player> <amount>` | Add money to a player's balance                 | `servertools.economy.addmoney`           |
-| `/removemoney <player> <amount>` | Remove money from a player's balance        | `servertools.economy.removemoney`       |
-| `/fly` or `/togglefly`     | Toggle flight mode                                 | `servertools.fly`                         |
+| `/addmoney <player> <amount>` | Add money to a player's balance                  | `servertools.economy.addmoney`           |
+| `/removemoney <player> <amount>` | Remove money from a player's balance          | `servertools.economy.removemoney`        |
+| `/fly` or `/togglefly`     | Toggle flight mode                                  | `servertools.fly`                        |
+| `/home`                    | Teleport to a home                                  | `servertools.home.home`                  |
+| `/sethome`                 | Set a home location                                 | `servertools.home.sethome`               |
+| `/delhome`                 | Delete a home                                       | `servertools.home.delhome`               |
+| `/homes` or `/listhomes`   | List your homes                                     | `servertools.home.homes`                 |
 
 ## Permissions
 | Permission                           | Description                                          |
@@ -61,7 +65,12 @@ This plugin requires the following dependencies:
 | `servertools.economy.baltop`         | Allows viewing top balances                           |
 | `servertools.economy.addmoney`       | Allows adding money to a player's balance             |
 | `servertools.economy.removemoney`    | Allows removing money from a player's balance         |
-| `servertools.fly`                     | Allows toggling flight mode                           |
+| `servertools.home.*`                 | Allows access to all home commands (sethome, home, delhome, homes                           |
+| `servertools.home.sethome`           | Allows viewing top balances                           |
+| `servertools.home.home`              | Allows adding money to a player's balance             |
+| `servertools.home.delhome`           | Allows removing money from a player's balance         |
+| `servertools.home.homes`             | Allows toggling flight mode                           |
+
 
 ## Installation
 1. Download the latest version of the plugin from the releases page.
@@ -161,3 +170,26 @@ fly:
   noPermission: "<red>You don't have permission to use this command."
   enabled: "<green>Flight mode enabled."
   disabled: "<red>Flight mode disabled."
+
+home:
+  # Maximum number of homes a player can set
+  maxHomes: 3
+
+  # Per-permission home limits (overrides maxHomes if set)
+  # Permission nodes correspond to the ones defined in your permissions plugin
+  homeLimits:
+    servertools.home.limit.1: 1
+    servertools.home.limit.5: 5
+    servertools.home.limit.unlimited: -1  # Use -1 for unlimited homes
+
+  # Messages
+  playerOnly: "<red>This command can only be used by players!"
+  noPermission: "<red>You don't have permission to use this command."
+  setHome: "<green>Home '%home_name%' set!"
+  teleportHome: "<green>Teleported to home '%home_name%'."
+  noHomeSet: "<red>You have not set a home named '%home_name%' yet."
+  homeDeleted: "<green>Your home '%home_name%' has been deleted."
+  noHomeToDelete: "<red>You don't have a home named '%home_name%' to delete."
+  homeLimitReached: "<red>You have reached the maximum number of homes."
+  listHomes: "<green>Your homes: %homes%"
+  noHomesSet: "<red>You have not set any homes yet."

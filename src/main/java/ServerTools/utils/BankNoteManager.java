@@ -1,4 +1,4 @@
-package org.yes.ServerTools.utils;
+package ServerTools.utils;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-import org.yes.ServerTools.ServerTools;
+import ServerTools.ServerTools;
 
 import java.util.ArrayList;
 import java.util.List;

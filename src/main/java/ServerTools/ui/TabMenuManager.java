@@ -1,4 +1,4 @@
-package org.yes.ServerTools.ui;
+package ServerTools.ui;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;

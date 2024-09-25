@@ -1,4 +1,4 @@
-package org.yes.ServerTools;
+package ServerTools;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -6,9 +6,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.yes.ServerTools.ServerTools;
-import org.yes.ServerTools.utils.EconomyManager;
-import org.yes.ServerTools.utils.MessageUtil;
+import ServerTools.ServerTools;
+import ServerTools.utils.EconomyManager;
+import ServerTools.utils.MessageUtil;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

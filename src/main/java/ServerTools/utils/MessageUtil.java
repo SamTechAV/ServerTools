@@ -1,4 +1,4 @@
-package org.yes.ServerTools.utils;
+package ServerTools.utils;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;

@@ -1,4 +1,4 @@
-package org.yes.ServerTools.utils;
+package ServerTools.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -6,7 +6,7 @@ import org.bukkit.configuration.ConfigurationSection; // Don't forget this impor
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.yes.ServerTools.ServerTools;
+import ServerTools.ServerTools;
 
 import java.io.File;
 import java.io.IOException;

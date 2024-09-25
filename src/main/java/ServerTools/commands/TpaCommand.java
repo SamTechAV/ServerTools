@@ -1,4 +1,4 @@
-package org.yes.ServerTools.commands;
+package ServerTools.commands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -10,8 +10,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.yes.ServerTools.ServerTools;
-import org.yes.ServerTools.utils.MessageUtil;
+import ServerTools.ServerTools;
+import ServerTools.utils.MessageUtil;
 
 import java.util.HashMap;
 import java.util.Map;

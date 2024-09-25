@@ -1,4 +1,4 @@
-package org.yes.ServerTools.utils;
+package ServerTools.utils;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;

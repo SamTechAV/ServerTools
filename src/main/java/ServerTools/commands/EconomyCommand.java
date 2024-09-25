@@ -1,4 +1,4 @@
-package org.yes.ServerTools.commands;
+package ServerTools.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -8,10 +8,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.yes.ServerTools.ServerTools;
-import org.yes.ServerTools.utils.EconomyManager;
-import org.yes.ServerTools.utils.MessageUtil;
-import org.yes.ServerTools.utils.BankNoteManager;
+import ServerTools.ServerTools;
+import ServerTools.utils.EconomyManager;
+import ServerTools.utils.MessageUtil;
+import ServerTools.utils.BankNoteManager;
 
 import java.util.*;
 

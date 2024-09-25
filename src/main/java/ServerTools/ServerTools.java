@@ -1,4 +1,4 @@
-package org.yes.ServerTools;
+package ServerTools;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
@@ -6,11 +6,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.yes.ServerTools.commands.*;
-import org.yes.ServerTools.listeners.*;
-import org.yes.ServerTools.utils.*;
-import org.yes.ServerTools.ui.*;
-import org.yes.ServerTools.*;
+import ServerTools.commands.*;
+import ServerTools.listeners.*;
+import ServerTools.utils.*;
+import ServerTools.ui.*;
+import ServerTools.*;
 
 import java.io.File;
 

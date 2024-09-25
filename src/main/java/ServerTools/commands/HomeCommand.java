@@ -1,4 +1,4 @@
-package org.yes.ServerTools.commands;
+package ServerTools.commands;
 
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -6,9 +6,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.yes.ServerTools.ServerTools;
-import org.yes.ServerTools.utils.HomeManager;
-import org.yes.ServerTools.utils.MessageUtil;
+import ServerTools.ServerTools;
+import ServerTools.utils.HomeManager;
+import ServerTools.utils.MessageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
