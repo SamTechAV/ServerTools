@@ -1,7 +1,7 @@
 package ServerTools;
 
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration; // Added import
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -30,9 +30,13 @@ public class ServerTools extends JavaPlugin implements Listener {
         saveDefaultConfig();
         config = getConfig();
 
-        homeManager = new HomeManager(this);
+        if (config.getBoolean("features.homeManager", true)) {
+            homeManager = new HomeManager(this);
+        }
 
-        tabMenuManager = new TabMenuManager(this);
+        if (config.getBoolean("features.tabMenu", true)) {
+            tabMenuManager = new TabMenuManager(this);
+        }
 
         if (!setupDependencies()) {
             getLogger().severe("Required dependencies not found! Disabling plugin.");
@@ -40,24 +44,24 @@ public class ServerTools extends JavaPlugin implements Listener {
             return;
         }
 
-        // Initialize economy manager
-        File economyFile = new File(getDataFolder(), "storage/economy.yml");
-        if (!economyFile.exists()) {
-            saveResource("storage/economy.yml", false);
+        if (config.getBoolean("features.economy", true)) {
+            File economyFile = new File(getDataFolder(), "storage/economy.yml");
+            if (!economyFile.exists()) {
+                saveResource("storage/economy.yml", false);
+            }
+            economyManager = new EconomyManager(economyFile);
         }
-        economyManager = new EconomyManager(economyFile);
 
-        // Initialize bank note manager
-        bankNoteManager = new BankNoteManager(this);
+        if (config.getBoolean("features.bankNotes", true)) {
+            bankNoteManager = new BankNoteManager(this);
+        }
 
-        // Initialize tab menu manager
-        tabMenuManager = new TabMenuManager(this);
+        if (config.getBoolean("features.joinLeaveMessages", true)) {
+            getServer().getPluginManager().registerEvents(new JoinLeaveListener(this), this);
+        }
 
-        // Register event listeners
-        getServer().getPluginManager().registerEvents(new JoinLeaveListener(this), this);
         getServer().getPluginManager().registerEvents(this, this);
 
-        // Register commands
         registerCommands();
 
         getLogger().info("ServerTools plugin enabled.");
@@ -65,7 +69,6 @@ public class ServerTools extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-        // Save economy data
         if (economyManager != null) {
             economyManager.saveData();
         }
@@ -104,52 +107,59 @@ public class ServerTools extends JavaPlugin implements Listener {
     }
 
     private void registerCommands() {
-        // Game mode commands
-        getCommand("gmc").setExecutor(new GameModeCommand(this, "gmc"));
-        getCommand("gms").setExecutor(new GameModeCommand(this, "gms"));
-        getCommand("gmsp").setExecutor(new GameModeCommand(this, "gmsp"));
-        getCommand("gma").setExecutor(new GameModeCommand(this, "gma"));
+        if (config.getBoolean("features.gameModeCommands", true)) {
+            getCommand("gmc").setExecutor(new GameModeCommand(this, "gmc"));
+            getCommand("gms").setExecutor(new GameModeCommand(this, "gms"));
+            getCommand("gmsp").setExecutor(new GameModeCommand(this, "gmsp"));
+            getCommand("gma").setExecutor(new GameModeCommand(this, "gma"));
+        }
 
-        // Teleport commands
-        TpaCommand tpaCommand = new TpaCommand(this);
-        getCommand("tpa").setExecutor(tpaCommand);
-        getCommand("tpahere").setExecutor(tpaCommand);
-        getCommand("tpaccept").setExecutor(tpaCommand);
-        getCommand("tpdeny").setExecutor(tpaCommand);
+        if (config.getBoolean("features.teleportCommands", true)) {
+            TpaCommand tpaCommand = new TpaCommand(this);
+            getCommand("tpa").setExecutor(tpaCommand);
+            getCommand("tpahere").setExecutor(tpaCommand);
+            getCommand("tpaccept").setExecutor(tpaCommand);
+            getCommand("tpdeny").setExecutor(tpaCommand);
+        }
 
-        // Messaging commands
-        MsgCommand msgCommand = new MsgCommand(this);
-        getCommand("msg").setExecutor(msgCommand);
-        getCommand("tell").setExecutor(msgCommand);
-        getCommand("w").setExecutor(msgCommand);
-        getCommand("r").setExecutor(msgCommand);
+        if (config.getBoolean("features.messagingCommands", true)) {
+            MsgCommand msgCommand = new MsgCommand(this);
+            getCommand("msg").setExecutor(msgCommand);
+            getCommand("tell").setExecutor(msgCommand);
+            getCommand("w").setExecutor(msgCommand);
+            getCommand("r").setExecutor(msgCommand);
+        }
 
-        // Economy commands
-        EconomyCommand economyCommand = new EconomyCommand(this);
-        getCommand("balance").setExecutor(economyCommand);
-        getCommand("bal").setExecutor(economyCommand);
-        getCommand("pay").setExecutor(economyCommand);
-        getCommand("withdraw").setExecutor(economyCommand);
-        getCommand("baltop").setExecutor(economyCommand);
-        getCommand("addmoney").setExecutor(economyCommand);
-        getCommand("removemoney").setExecutor(economyCommand);
+        if (config.getBoolean("features.economy", true)) {
+            EconomyCommand economyCommand = new EconomyCommand(this);
+            getCommand("balance").setExecutor(economyCommand);
+            getCommand("bal").setExecutor(economyCommand);
+            getCommand("pay").setExecutor(economyCommand);
+            getCommand("withdraw").setExecutor(economyCommand);
+            getCommand("baltop").setExecutor(economyCommand);
+            getCommand("addmoney").setExecutor(economyCommand);
+            getCommand("removemoney").setExecutor(economyCommand);
+        }
 
-        // Fly command
-        getCommand("fly").setExecutor(new FlyCommand(this));
+        if (config.getBoolean("features.flyCommand", true)) {
+            getCommand("fly").setExecutor(new FlyCommand(this));
+        }
 
-        // Home commands
-        HomeCommand homeCommand = new HomeCommand(this);
-        getCommand("sethome").setExecutor(homeCommand);
-        getCommand("home").setExecutor(homeCommand);
-        getCommand("delhome").setExecutor(homeCommand);
-        getCommand("homes").setExecutor(homeCommand);
+        if (config.getBoolean("features.homeManager", true)) {
+            HomeCommand homeCommand = new HomeCommand(this);
+            getCommand("sethome").setExecutor(homeCommand);
+            getCommand("home").setExecutor(homeCommand);
+            getCommand("delhome").setExecutor(homeCommand);
+            getCommand("homes").setExecutor(homeCommand);
+        }
 
-        // Help command
-        getCommand("help").setExecutor(new HelpCommand(this));
+        if (config.getBoolean("features.helpCommand", true)) {
+            getCommand("help").setExecutor(new HelpCommand(this));
+        }
 
-        //Rules
-        getCommand("rules").setExecutor(new RulesCommand(this));
-
+        if (config.getBoolean("features.rulesCommand", true)) {
+            getCommand("rules").setExecutor(new RulesCommand(this));
+        }
     }
 
     public FileConfiguration getCustomConfig(String filename) {
@@ -162,6 +172,7 @@ public class ServerTools extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
+        if (!config.getBoolean("features.bankNotes", true)) return;
         if (event.getItem() == null) return;
         ItemStack item = event.getItem();
         if (bankNoteManager.isBankNote(item)) {

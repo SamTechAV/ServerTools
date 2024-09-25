@@ -32,16 +32,24 @@ public class JoinLeaveListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         economyManager.initializePlayer(event.getPlayer());
 
-        String joinMessage = plugin.getConfig().getString("joinandleave.joinMessage", "<green>%player_name% has joined the server!");
-        Component parsedMessage = parseMessage(joinMessage, event.getPlayer().getName());
-        event.joinMessage(parsedMessage);
+        if (plugin.getConfig().getBoolean("features.joinLeaveMessages", true)) {
+            String joinMessage = plugin.getConfig().getString("joinandleave.joinMessage", "<green>%player_name% has joined the server!");
+            Component parsedMessage = parseMessage(joinMessage, event.getPlayer().getName());
+            event.joinMessage(parsedMessage);
+        } else {
+            event.joinMessage(null);
+        }
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        String quitMessage = plugin.getConfig().getString("joinandleave.quitMessage", "<red>%player_name% has left the server.");
-        Component parsedMessage = parseMessage(quitMessage, event.getPlayer().getName());
-        event.quitMessage(parsedMessage);
+        if (plugin.getConfig().getBoolean("features.joinLeaveMessages", true)) {
+            String quitMessage = plugin.getConfig().getString("joinandleave.quitMessage", "<red>%player_name% has left the server.");
+            Component parsedMessage = parseMessage(quitMessage, event.getPlayer().getName());
+            event.quitMessage(parsedMessage);
+        } else {
+            event.quitMessage(null);
+        }
     }
 
     private Component parseMessage(String message, String playerName) {

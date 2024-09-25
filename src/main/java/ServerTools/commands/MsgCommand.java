@@ -28,7 +28,7 @@ public class MsgCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(MessageUtil.parseMessage(sender, "&cThis command can only be used by players!", null));
+            sender.sendMessage(MessageUtil.parseMessage(sender, "<red>This command can only be used by players!", null));
             return true;
         }
 
@@ -49,13 +49,13 @@ public class MsgCommand implements CommandExecutor {
 
     private boolean handleMessageCommand(Player sender, String[] args) {
         if (args.length < 2) {
-            sender.sendMessage(MessageUtil.parseMessage(sender, config.getString("directmessaging.msgUsage", "&cUsage: /msg <player> <message>"), null));
+            sender.sendMessage(MessageUtil.parseMessage(sender, config.getString("directmessaging.msgUsage", "<red>Usage: /msg <player> <message>"), null));
             return true;
         }
 
         Player recipient = Bukkit.getPlayer(args[0]);
         if (recipient == null || !recipient.isOnline()) {
-            sender.sendMessage(MessageUtil.parseMessage(sender, config.getString("economy.playerNotFound", "&cPlayer not found or not online."), null));
+            sender.sendMessage(MessageUtil.parseMessage(sender, config.getString("economy.playerNotFound", "<red>Player not found or not online."), null));
             return true;
         }
 
@@ -66,19 +66,19 @@ public class MsgCommand implements CommandExecutor {
 
     private boolean handleReplyCommand(Player sender, String[] args) {
         if (args.length < 1) {
-            sender.sendMessage(MessageUtil.parseMessage(sender, config.getString("directmessaging.replyUsage", "&cUsage: /r <message>"), null));
+            sender.sendMessage(MessageUtil.parseMessage(sender, config.getString("directmessaging.replyUsage", "<red>Usage: /r <message>"), null));
             return true;
         }
 
         UUID lastSenderUUID = lastMessageSender.get(sender.getUniqueId());
         if (lastSenderUUID == null) {
-            sender.sendMessage(MessageUtil.parseMessage(sender, config.getString("directmessaging.noOneToReplyTo", "&cYou have no one to reply to."), null));
+            sender.sendMessage(MessageUtil.parseMessage(sender, config.getString("directmessaging.noOneToReplyTo", "<red>You have no one to reply to."), null));
             return true;
         }
 
         Player recipient = Bukkit.getPlayer(lastSenderUUID);
         if (recipient == null || !recipient.isOnline()) {
-            sender.sendMessage(MessageUtil.parseMessage(sender, config.getString("economy.playerNotFound", "&cPlayer not found or not online."), null));
+            sender.sendMessage(MessageUtil.parseMessage(sender, config.getString("economy.playerNotFound", "<red>Player not found or not online."), null));
             return true;
         }
 
@@ -88,8 +88,8 @@ public class MsgCommand implements CommandExecutor {
     }
 
     private void sendPrivateMessage(Player sender, Player recipient, String messageContent) {
-        String senderFormat = config.getString("directmessaging.msgFormatSender", "&7[&cme &7-> &c%recipient%&7] &f%message%");
-        String recipientFormat = config.getString("directmessaging.msgFormatRecipient", "&7[&c%sender% &7-> &cme&7] &f%message%");
+        String senderFormat = config.getString("directmessaging.msgFormatSender", "<red>[me -> %recipient%]</red> %message%");
+        String recipientFormat = config.getString("directmessaging.msgFormatRecipient", "<red>[%sender% -> me]</red> %message%");
 
         Map<String, String> senderPlaceholders = new HashMap<>();
         senderPlaceholders.put("%recipient%", recipient.getName());

@@ -33,7 +33,7 @@ public class TpaCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(MessageUtil.parseMessage(sender, "&cThis command can only be used by players!", null));
+            sender.sendMessage(MessageUtil.parseMessage(sender, "<red>This command can only be used by players!", null));
             return true;
         }
 
@@ -56,18 +56,18 @@ public class TpaCommand implements CommandExecutor {
 
     private boolean handleTpaCommand(Player requester, String[] args) {
         if (args.length != 1) {
-            requester.sendMessage(MessageUtil.parseMessage(requester, config.getString("tpa.tpaUsage", "&cUsage: /tpa <player>"), null));
+            requester.sendMessage(MessageUtil.parseMessage(requester, config.getString("tpa.tpaUsage", "<red>Usage: /tpa <player>"), null));
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null || !target.isOnline()) {
-            requester.sendMessage(MessageUtil.parseMessage(requester, config.getString("economy.playerNotFound", "&cPlayer not found or not online."), null));
+            requester.sendMessage(MessageUtil.parseMessage(requester, config.getString("economy.playerNotFound", "<red>Player not found or not online."), null));
             return true;
         }
 
         if (target.equals(requester)) {
-            requester.sendMessage(MessageUtil.parseMessage(requester, config.getString("tpa.cannotTeleportToSelf", "&cYou cannot send a teleport request to yourself!"), null));
+            requester.sendMessage(MessageUtil.parseMessage(requester, config.getString("tpa.cannotTeleportToSelf", "<red>You cannot send a teleport request to yourself!"), null));
             return true;
         }
 
@@ -84,18 +84,18 @@ public class TpaCommand implements CommandExecutor {
 
     private boolean handleTpahereCommand(Player requester, String[] args) {
         if (args.length != 1) {
-            requester.sendMessage(MessageUtil.parseMessage(requester, config.getString("tpa.tpahereUsage", "&cUsage: /tpahere <player>"), null));
+            requester.sendMessage(MessageUtil.parseMessage(requester, config.getString("tpa.tpahereUsage", "<red>Usage: /tpahere <player>"), null));
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null || !target.isOnline()) {
-            requester.sendMessage(MessageUtil.parseMessage(requester, config.getString("economy.playerNotFound", "&cPlayer not found or not online."), null));
+            requester.sendMessage(MessageUtil.parseMessage(requester, config.getString("economy.playerNotFound", "<red>Player not found or not online."), null));
             return true;
         }
 
         if (target.equals(requester)) {
-            requester.sendMessage(MessageUtil.parseMessage(requester, config.getString("tpa.cannotTeleportToSelf", "&cYou cannot send a teleport request to yourself!"), null));
+            requester.sendMessage(MessageUtil.parseMessage(requester, config.getString("tpa.cannotTeleportToSelf", "<red>You cannot send a teleport request to yourself!"), null));
             return true;
         }
 
@@ -112,7 +112,7 @@ public class TpaCommand implements CommandExecutor {
 
     private void sendClickableRequest(Player target, Player requester, String requestType) {
         String messageKey = "tpa." + requestType + "RequestReceived";
-        String messageTemplate = config.getString(messageKey, "&a%requester% has requested to teleport " + (requestType.equals("tpa") ? "to you" : "you to them") + ". Click to respond:");
+        String messageTemplate = config.getString(messageKey, "<green>%requester% has requested to teleport " + (requestType.equals("tpa") ? "to you" : "you to them") + ". Click to respond:");
 
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("%requester%", requester.getName());
@@ -121,7 +121,7 @@ public class TpaCommand implements CommandExecutor {
 
         String acceptSymbol = config.getString("tpa.tpaAcceptSymbol", " ✔ ");
         String acceptSymbolColor = config.getString("tpa.tpaAcceptSymbolColor", "GREEN");
-        String acceptHoverText = config.getString("tpa.tpaAcceptHoverText", "&aClick to accept");
+        String acceptHoverText = config.getString("tpa.tpaAcceptHoverText", "<green>Click to accept");
 
         Component acceptComponent = Component.text(acceptSymbol)
                 .color(MessageUtil.parseTextColor(acceptSymbolColor))
@@ -131,7 +131,7 @@ public class TpaCommand implements CommandExecutor {
 
         String denySymbol = config.getString("tpa.tpaDenySymbol", " ✘ ");
         String denySymbolColor = config.getString("tpa.tpaDenySymbolColor", "RED");
-        String denyHoverText = config.getString("tpa.tpaDenyHoverText", "&cClick to deny");
+        String denyHoverText = config.getString("tpa.tpaDenyHoverText", "<red>Click to deny");
 
         Component denyComponent = Component.text(denySymbol)
                 .color(MessageUtil.parseTextColor(denySymbolColor))
@@ -151,13 +151,13 @@ public class TpaCommand implements CommandExecutor {
         }
 
         if (requesterId == null) {
-            target.sendMessage(MessageUtil.parseMessage(target, config.getString("tpa.noRequestToAccept", "&cYou have no pending teleport requests to accept."), null));
+            target.sendMessage(MessageUtil.parseMessage(target, config.getString("tpa.noRequestToAccept", "<red>You have no pending teleport requests to accept."), null));
             return true;
         }
 
         Player requester = Bukkit.getPlayer(requesterId);
         if (requester == null || !requester.isOnline()) {
-            target.sendMessage(MessageUtil.parseMessage(target, config.getString("economy.playerNotFound", "&cPlayer not found or not online."), null));
+            target.sendMessage(MessageUtil.parseMessage(target, config.getString("economy.playerNotFound", "<red>Player not found or not online."), null));
             return true;
         }
 
@@ -185,18 +185,18 @@ public class TpaCommand implements CommandExecutor {
         }
 
         if (requesterId == null) {
-            target.sendMessage(MessageUtil.parseMessage(target, config.getString("tpa.noRequestToDeny", "&cYou have no pending teleport requests to deny."), null));
+            target.sendMessage(MessageUtil.parseMessage(target, config.getString("tpa.noRequestToDeny", "<red>You have no pending teleport requests to deny."), null));
             return true;
         }
 
         Player requester = Bukkit.getPlayer(requesterId);
-        String denyMessage = config.getString("tpa.tpRequestDenied", "&cYour teleport request was denied.");
+        String denyMessage = config.getString("tpa.tpRequestDenied", "<red>Your teleport request was denied.");
 
         if (requester != null && requester.isOnline()) {
             requester.sendMessage(MessageUtil.parseMessage(requester, denyMessage, null));
         }
 
-        target.sendMessage(MessageUtil.parseMessage(target, config.getString("tpa.tpDenyConfirmation", "&aYou denied the teleport request."), null));
+        target.sendMessage(MessageUtil.parseMessage(target, config.getString("tpa.tpDenyConfirmation", "<red>You denied the teleport request."), null));
 
         return true;
     }

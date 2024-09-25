@@ -22,7 +22,7 @@ public class GameModeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(MessageUtil.parseMessage(sender, "&cThis command can only be used by players!", null));
+            sender.sendMessage(MessageUtil.parseMessage(sender, "<red>This command can only be used by players!", null));
             return true;
         }
 
@@ -54,7 +54,7 @@ public class GameModeCommand implements CommandExecutor {
     }
 
     private void sendMessage(Player player, String messageKey) {
-        String message = plugin.getPluginConfig().getString("gamemode." + messageKey, "&aYour game mode has been updated.");
+        String message = plugin.getPluginConfig().getString("gamemode." + messageKey, "<green>Your game mode has been updated.");
         player.sendMessage(MessageUtil.parseMessage(player, message, null));
     }
 }

@@ -1,3 +1,16 @@
+features:
+  economy: true
+  bankNotes: true
+  tabMenu: true
+  homeManager: true
+  joinLeaveMessages: true
+  gameModeCommands: true
+  teleportCommands: true
+  messagingCommands: true
+  flyCommand: true
+  helpCommand: true
+  rulesCommand: true
+
 joinandleave:
   # Customize the join message
   joinMessage: |
