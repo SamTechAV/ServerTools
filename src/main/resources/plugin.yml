@@ -77,8 +77,27 @@ commands:
     usage: /<command>
     aliases: [togglefly]
     permission: servertools.fly
+  #homes
+  sethome:
+    description: Set a home location
+    usage: /<command> [homeName]
+    permission: servertools.home.sethome
+  home:
+    description: Teleport to a home
+    usage: /<command> [homeName]
+    permission: servertools.home.home
+  delhome:
+    description: Delete a home
+    usage: /<command> [homeName]
+    permission: servertools.home.delhome
+  homes:
+    description: List your homes
+    usage: /<command>
+    aliases: [listhomes]
+    permission: servertools.home.homes
 
 permissions:
+  #gamemodes
   servertools.gamemode.*:
     description: Allows access to all gamemode commands
     children:
@@ -98,6 +117,7 @@ permissions:
   servertools.gamemode.adventure:
     description: Allows changing to adventure mode
     default: op
+  #tpa
   servertools.tpa.*:
     description: Allows access to all TPA commands
     children:
@@ -117,6 +137,7 @@ permissions:
   servertools.tpa.deny:
     description: Allows denying teleport requests
     default: true
+  #direct Message
   servertools.message.*:
     description: Allows access to all messaging commands
     children:
@@ -128,6 +149,7 @@ permissions:
   servertools.message.reply:
     description: Allows replying to private messages
     default: true
+  #economy
   servertools.economy.*:
     description: Allows access to all economy commands
     children:
@@ -155,6 +177,38 @@ permissions:
   servertools.economy.removemoney:
     description: Allows removing money from a player's balance
     default: op
+  #fly
   servertools.fly:
     description: Allows toggling flight mode
     default: op
+  #homes
+  servertools.home.*:
+    description: Allows access to all home commands
+    children:
+      servertools.home.sethome: true
+      servertools.home.home: true
+      servertools.home.delhome: true
+      servertools.home.homes: true
+  servertools.home.sethome:
+    description: Allows setting homes
+    default: true
+  servertools.home.home:
+    description: Allows teleporting to homes
+    default: true
+  servertools.home.delhome:
+    description: Allows deleting homes
+    default: true
+  servertools.home.homes:
+    description: Allows listing homes
+    default: true
+
+  # Per-permission home limits
+  servertools.home.limit.1:
+    description: Allows setting up to 1 home
+    default: false
+  servertools.home.limit.5:
+    description: Allows setting up to 5 homes
+    default: false
+  servertools.home.limit.unlimited:
+    description: Allows setting unlimited homes
+    default: false

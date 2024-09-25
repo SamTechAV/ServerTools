@@ -86,3 +86,26 @@ fly:
   noPermission: "<red>You don't have permission to use this command."
   enabled: "<green>Flight mode enabled."
   disabled: "<red>Flight mode disabled."
+
+home:
+  # Maximum number of homes a player can set
+  maxHomes: 3
+
+  # Per-permission home limits (overrides maxHomes if set)
+  # Permission nodes correspond to the ones defined in your permissions plugin
+  homeLimits:
+    servertools.home.limit.1: 1
+    servertools.home.limit.5: 5
+    servertools.home.limit.unlimited: -1  # Use -1 for unlimited homes
+
+  # Messages
+  playerOnly: "<red>This command can only be used by players!"
+  noPermission: "<red>You don't have permission to use this command."
+  setHome: "<green>Home '%home_name%' set!"
+  teleportHome: "<green>Teleported to home '%home_name%'."
+  noHomeSet: "<red>You have not set a home named '%home_name%' yet."
+  homeDeleted: "<green>Your home '%home_name%' has been deleted."
+  noHomeToDelete: "<red>You don't have a home named '%home_name%' to delete."
+  homeLimitReached: "<red>You have reached the maximum number of homes."
+  listHomes: "<green>Your homes: %homes%"
+  noHomesSet: "<red>You have not set any homes yet."

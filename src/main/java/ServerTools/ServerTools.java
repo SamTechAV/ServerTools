@@ -7,10 +7,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.yes.ServerTools.commands.*;
-import org.yes.ServerTools.listeners.JoinLeaveListener;
-import org.yes.ServerTools.utils.EconomyManager;
-import org.yes.ServerTools.utils.BankNoteManager;
-import org.yes.ServerTools.ui.TabMenuManager;
+import org.yes.ServerTools.listeners.*;
+import org.yes.ServerTools.utils.*;
+import org.yes.ServerTools.ui.*;
+import org.yes.ServerTools.*;
 
 import java.io.File;
 
@@ -20,10 +20,18 @@ public class ServerTools extends JavaPlugin implements Listener {
     private BankNoteManager bankNoteManager;
     private TabMenuManager tabMenuManager;
 
+    private HomeManager homeManager;
+
+    public HomeManager getHomeManager() {
+        return homeManager;
+    }
+
     @Override
     public void onEnable() {
         saveDefaultConfig();
         config = getConfig();
+
+        homeManager = new HomeManager(this);
 
         if (!setupDependencies()) {
             getLogger().severe("Required dependencies not found! Disabling plugin.");
@@ -127,6 +135,13 @@ public class ServerTools extends JavaPlugin implements Listener {
 
         // Fly command
         getCommand("fly").setExecutor(new FlyCommand(this));
+
+        // Home commands
+        HomeCommand homeCommand = new HomeCommand(this);
+        getCommand("sethome").setExecutor(homeCommand);
+        getCommand("home").setExecutor(homeCommand);
+        getCommand("delhome").setExecutor(homeCommand);
+        getCommand("homes").setExecutor(homeCommand);
 
     }
 
