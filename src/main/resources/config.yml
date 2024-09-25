@@ -70,17 +70,6 @@ economy:
     depositSuccess: "<green>Successfully deposited %amount% into your account."
     depositFailed: "<red>Failed to deposit the bank note. Please try again."
 
-tab-menu:
-  update-interval: 20 # Update interval in ticks (20 ticks = 1 second)
-  header: "<gold>Welcome to <gradient:red:blue>Your Server</gradient>!"
-  footer: "<gray>Players online: <green>%server_online%</green>"
-  name-format: "<group_color><group_name> <white>| "#Player name is their by defult no needs for the <player> tag
-  group-colors:
-    default: "<gray>"
-    vip: "<green>"
-    admin: "<red>"
-    owner: "<dark_red>"
-
 fly:
   playerOnly: "<red>This command can only be used by players!"
   noPermission: "<red>You don't have permission to use this command."

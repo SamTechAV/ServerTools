@@ -1,0 +1,28 @@
+# Tab Menu Configuration
+
+# Refresh interval in ticks (20 ticks = 1 second)
+refresh-interval: 40
+
+# Header frames for animation
+header-frames:
+  - "<gradient:blue:light_purple>Welcome to the Server!</gradient>"
+  - "<rainbow>Enjoy your stay!</rainbow>"
+  - "<gold>Don't forget to vote!</gold>"
+  - "<green>Join our Discord!</green>"
+
+# Footer frames for animation
+footer-frames:
+  - "<gray>Players online: <green>%server_online%</green>"
+  - "<gray>Your ping: <green>%player_ping%</green>"
+  - "<gray>Website: <aqua>www.example.com</aqua>"
+  - "<gray>Store: <yellow>store.example.com</yellow>"
+
+# Name format in the tab list
+name-format: "<group_color><group_name> <white>| <player_name>"
+
+# Group colors for tab names
+group-colors:
+  default: "<gray>"
+  vip: "<green>"
+  mod: "<blue>"
+  admin: "<red>"

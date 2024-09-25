@@ -94,7 +94,18 @@ commands:
     usage: /<command>
     aliases: [listhomes]
     permission: servertools.home.homes
+  #help
+  help:
+    description: Shows the help menu
+    usage: /<command> [page]
+    permission: servertools.help
+  #rules
+  rules:
+    description: View the server rules
+    usage: /<command> [page]
+    permission: servertools.rules
 
+#--------------------------------------------------------------------------------Perms v  Commands^
 permissions:
   #gamemodes
   servertools.gamemode.*:
@@ -211,3 +222,17 @@ permissions:
   servertools.home.limit.unlimited:
     description: Allows setting unlimited homes
     default: false
+  # help
+  servertools.help:
+    description: Allows access to the /help command
+    default: true
+  servertools.help.reload:
+    description: Allows reloading of the help configuration
+    default: op
+  # Rules
+  servertools.rules:
+    description: Allows access to the /help command
+    default: true
+  servertools.rules.reload:
+    description: Allows reloading of the help configuration
+    default: op

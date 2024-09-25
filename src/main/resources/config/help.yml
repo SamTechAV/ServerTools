@@ -1,0 +1,18 @@
+# The title displayed at the top of the help menu
+title: "<gold><bold>Server Help"
+
+# Number of lines per page
+linesPerPage: 5
+
+# Help messages
+messages:
+  - "<yellow>/help - Show the help menu"
+  - "<yellow>/spawn - Teleport to the spawn point"
+  - "<yellow>/home - Teleport to your home"
+  - "<yellow>/sethome - Set your home location"
+  - "<yellow>/tpa [player] - Request to teleport to a player"
+  - "<yellow>/tpaccept - Accept a teleport request"
+  - "<yellow>/warp [name] - Teleport to a warp point"
+  - "<yellow>/msg [player] [message] - Send a private message"
+  - "<yellow>/r [message] - Reply to the last private message"
+  - "<yellow>/rules - View the server rules"

@@ -1,6 +1,7 @@
 package ServerTools;
 
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration; // Added import
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -10,7 +11,6 @@ import ServerTools.commands.*;
 import ServerTools.listeners.*;
 import ServerTools.utils.*;
 import ServerTools.ui.*;
-import ServerTools.*;
 
 import java.io.File;
 
@@ -19,7 +19,6 @@ public class ServerTools extends JavaPlugin implements Listener {
     private EconomyManager economyManager;
     private BankNoteManager bankNoteManager;
     private TabMenuManager tabMenuManager;
-
     private HomeManager homeManager;
 
     public HomeManager getHomeManager() {
@@ -33,6 +32,8 @@ public class ServerTools extends JavaPlugin implements Listener {
 
         homeManager = new HomeManager(this);
 
+        tabMenuManager = new TabMenuManager(this);
+
         if (!setupDependencies()) {
             getLogger().severe("Required dependencies not found! Disabling plugin.");
             getServer().getPluginManager().disablePlugin(this);
@@ -40,9 +41,9 @@ public class ServerTools extends JavaPlugin implements Listener {
         }
 
         // Initialize economy manager
-        File economyFile = new File(getDataFolder(), "economy.yml");
+        File economyFile = new File(getDataFolder(), "storage/economy.yml");
         if (!economyFile.exists()) {
-            saveResource("economy.yml", false);
+            saveResource("storage/economy.yml", false);
         }
         economyManager = new EconomyManager(economyFile);
 
@@ -143,6 +144,20 @@ public class ServerTools extends JavaPlugin implements Listener {
         getCommand("delhome").setExecutor(homeCommand);
         getCommand("homes").setExecutor(homeCommand);
 
+        // Help command
+        getCommand("help").setExecutor(new HelpCommand(this));
+
+        //Rules
+        getCommand("rules").setExecutor(new RulesCommand(this));
+
+    }
+
+    public FileConfiguration getCustomConfig(String filename) {
+        File configFile = new File(getDataFolder(), filename);
+        if (!configFile.exists()) {
+            saveResource(filename, false);
+        }
+        return YamlConfiguration.loadConfiguration(configFile);
     }
 
     @EventHandler
