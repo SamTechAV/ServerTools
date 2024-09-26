@@ -23,17 +23,16 @@ public class ServerTools extends JavaPlugin implements Listener {
     private AFKManager afkManager;
     private LegacyCombatManager legacyCombatManager;
 
+    // Flags to track if Vault and LuckPerms are available
+    private boolean vaultEnabled = false;
+    private boolean luckPermsEnabled = false;
+
     @Override
     public void onEnable() {
         saveDefaultConfig();
         config = getConfig();
 
-        if (!setupDependencies()) {
-            getLogger().severe("Required dependencies not found! Disabling plugin.");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
-
+        setupDependencies();
         initializeFeatures();
         registerCommands();
         registerListeners();
@@ -53,16 +52,21 @@ public class ServerTools extends JavaPlugin implements Listener {
         getLogger().info("ServerTools plugin disabled.");
     }
 
-    private boolean setupDependencies() {
-        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {
-            getLogger().severe("PlaceholderAPI not found!");
-            return false;
+    // Check for soft dependencies (Vault, LuckPerms)
+    private void setupDependencies() {
+        if (getServer().getPluginManager().getPlugin("Vault") != null) {
+            vaultEnabled = true;
+            getLogger().info("Vault detected and enabled.");
+        } else {
+            getLogger().info("Vault not found. Economy features will be disabled.");
         }
-        if (getServer().getPluginManager().getPlugin("LuckPerms") == null) {
-            getLogger().severe("LuckPerms not found!");
-            return false;
+
+        if (getServer().getPluginManager().getPlugin("LuckPerms") != null) {
+            luckPermsEnabled = true;
+            getLogger().info("LuckPerms detected and enabled.");
+        } else {
+            getLogger().info("LuckPerms not found. Some permissions features may be limited.");
         }
-        return true;
     }
 
     private void initializeFeatures() {
@@ -74,20 +78,26 @@ public class ServerTools extends JavaPlugin implements Listener {
             homeManager = new HomeManager(this);
         }
 
-        if (config.getBoolean("features.tabMenu", true)) {
+        if (config.getBoolean("features.tabMenu", true) && luckPermsEnabled) {
             tabMenuManager = new TabMenuManager(this);
+        } else if (config.getBoolean("features.tabMenu", true) && !luckPermsEnabled) {
+            getLogger().warning("TabMenu feature requires LuckPerms. This feature will be disabled.");
         }
 
-        if (config.getBoolean("features.economy", true)) {
+        if (config.getBoolean("features.economy", true) && vaultEnabled) {
             File economyFile = new File(getDataFolder(), "storage/economy.yml");
             if (!economyFile.exists()) {
                 saveResource("storage/economy.yml", false);
             }
             economyManager = new EconomyManager(economyFile);
+        } else if (config.getBoolean("features.economy", true) && !vaultEnabled) {
+            getLogger().warning("Economy features require Vault. These features will be disabled.");
         }
 
-        if (config.getBoolean("features.bankNotes", true)) {
+        if (config.getBoolean("features.bankNotes", true) && vaultEnabled) {
             bankNoteManager = new BankNoteManager(this);
+        } else if (config.getBoolean("features.bankNotes", true) && !vaultEnabled) {
+            getLogger().warning("Bank notes feature requires Vault. This feature will be disabled.");
         }
 
         if (config.getBoolean("features.legacyCombat", false)) {
@@ -131,7 +141,7 @@ public class ServerTools extends JavaPlugin implements Listener {
             getCommand("r").setExecutor(msgCommand);
         }
 
-        if (config.getBoolean("features.economy", true)) {
+        if (config.getBoolean("features.economy", true) && vaultEnabled) {
             EconomyCommand economyCommand = new EconomyCommand(this);
             getCommand("balance").setExecutor(economyCommand);
             getCommand("bal").setExecutor(economyCommand);
@@ -238,5 +248,14 @@ public class ServerTools extends JavaPlugin implements Listener {
             event.setCancelled(true);
             bankNoteManager.depositBankNote(event.getPlayer(), item);
         }
+    }
+
+    // Add methods to check if Vault or LuckPerms are enabled
+    public boolean isVaultEnabled() {
+        return vaultEnabled;
+    }
+
+    public boolean isLuckPermsEnabled() {
+        return luckPermsEnabled;
     }
 }

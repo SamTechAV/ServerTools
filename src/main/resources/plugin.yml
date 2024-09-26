@@ -2,14 +2,11 @@ name: Server-Tools
 version: '3.0'
 main: ServerTools.ServerTools
 description: Commands for WSN by SamTech
-author: SamTech
-website: https://Sam-Tech.net
+author: Sam
+website: https://Sam-Tech.net (comming soon)
 api-version: '1.21'
-softdepend:
-  - Vault
-  - LuckPerms
-depend:
-  - PlaceholderAPI
+depend: [PlaceholderAPI]
+softdepend: [Vault, LuckPerms]
 
 commands:
   # Game mode shortener
