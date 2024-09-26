@@ -20,23 +20,12 @@ public class ServerTools extends JavaPlugin implements Listener {
     private BankNoteManager bankNoteManager;
     private TabMenuManager tabMenuManager;
     private HomeManager homeManager;
-
-    public HomeManager getHomeManager() {
-        return homeManager;
-    }
+    private AFKManager afkManager;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
         config = getConfig();
-
-        if (config.getBoolean("features.homeManager", true)) {
-            homeManager = new HomeManager(this);
-        }
-
-        if (config.getBoolean("features.tabMenu", true)) {
-            tabMenuManager = new TabMenuManager(this);
-        }
 
         if (!setupDependencies()) {
             getLogger().severe("Required dependencies not found! Disabling plugin.");
@@ -44,25 +33,9 @@ public class ServerTools extends JavaPlugin implements Listener {
             return;
         }
 
-        if (config.getBoolean("features.economy", true)) {
-            File economyFile = new File(getDataFolder(), "storage/economy.yml");
-            if (!economyFile.exists()) {
-                saveResource("storage/economy.yml", false);
-            }
-            economyManager = new EconomyManager(economyFile);
-        }
-
-        if (config.getBoolean("features.bankNotes", true)) {
-            bankNoteManager = new BankNoteManager(this);
-        }
-
-        if (config.getBoolean("features.joinLeaveMessages", true)) {
-            getServer().getPluginManager().registerEvents(new JoinLeaveListener(this), this);
-        }
-
-        getServer().getPluginManager().registerEvents(this, this);
-
+        initializeFeatures();
         registerCommands();
+        registerListeners();
 
         getLogger().info("ServerTools plugin enabled.");
     }
@@ -76,24 +49,6 @@ public class ServerTools extends JavaPlugin implements Listener {
         getLogger().info("ServerTools plugin disabled.");
     }
 
-    public FileConfiguration getPluginConfig() {
-        return config;
-    }
-
-    public EconomyManager getEconomyManager() {
-        return economyManager;
-    }
-
-    public BankNoteManager getBankNoteManager() {
-        return bankNoteManager;
-    }
-
-    public void reloadPluginConfig() {
-        reloadConfig();
-        config = getConfig();
-        // Reload any other configuration-dependent components
-    }
-
     private boolean setupDependencies() {
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {
             getLogger().severe("PlaceholderAPI not found!");
@@ -104,6 +59,44 @@ public class ServerTools extends JavaPlugin implements Listener {
             return false;
         }
         return true;
+    }
+
+    private void initializeFeatures() {
+        if (config.getBoolean("features.afk", true)) {
+            afkManager = new AFKManager(this);
+        }
+
+        if (config.getBoolean("features.homeManager", true)) {
+            homeManager = new HomeManager(this);
+        }
+
+        if (config.getBoolean("features.tabMenu", true)) {
+            tabMenuManager = new TabMenuManager(this);
+        }
+
+        if (config.getBoolean("features.economy", true)) {
+            File economyFile = new File(getDataFolder(), "storage/economy.yml");
+            if (!economyFile.exists()) {
+                saveResource("storage/economy.yml", false);
+            }
+            economyManager = new EconomyManager(economyFile);
+        }
+
+        if (config.getBoolean("features.bankNotes", true)) {
+            bankNoteManager = new BankNoteManager(this);
+        }
+    }
+
+    private void registerListeners() {
+        getServer().getPluginManager().registerEvents(this, this);
+
+        if (config.getBoolean("features.joinLeaveMessages", true)) {
+            getServer().getPluginManager().registerEvents(new JoinLeaveListener(this), this);
+        }
+
+        if (config.getBoolean("features.afk", true)) {
+            getServer().getPluginManager().registerEvents(new AFKListener(this), this);
+        }
     }
 
     private void registerCommands() {
@@ -160,6 +153,36 @@ public class ServerTools extends JavaPlugin implements Listener {
         if (config.getBoolean("features.rulesCommand", true)) {
             getCommand("rules").setExecutor(new RulesCommand(this));
         }
+
+        if (config.getBoolean("features.afk", true)) {
+            getCommand("afk").setExecutor(new AFKCommand(this));
+        }
+    }
+
+    public FileConfiguration getPluginConfig() {
+        return config;
+    }
+
+    public EconomyManager getEconomyManager() {
+        return economyManager;
+    }
+
+    public BankNoteManager getBankNoteManager() {
+        return bankNoteManager;
+    }
+
+    public HomeManager getHomeManager() {
+        return homeManager;
+    }
+
+    public AFKManager getAFKManager() {
+        return afkManager;
+    }
+
+    public void reloadPluginConfig() {
+        reloadConfig();
+        config = getConfig();
+        // Reload any other configuration-dependent components
     }
 
     public FileConfiguration getCustomConfig(String filename) {

@@ -10,6 +10,7 @@ features:
   flyCommand: true
   helpCommand: true
   rulesCommand: true
+  afk: true
 
 joinandleave:
   # Customize the join message
@@ -111,3 +112,13 @@ home:
   homeLimitReached: "<red>You have reached the maximum number of homes."
   listHomes: "<green>Your homes: %homes%"
   noHomesSet: "<red>You have not set any homes yet."
+
+# AFK Module Configuration
+afk:
+  auto-afk: true
+  auto-afk-time: 300 # Time in seconds before a player is set to AFK automatically
+  messages:
+    afk-enabled: "<yellow>You are now AFK."
+    afk-disabled: "<yellow>You are no longer AFK."
+    player-afk: "<yellow>%player_name% is now AFK."
+    player-returned: "<yellow>%player_name% is no longer AFK."

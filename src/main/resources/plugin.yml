@@ -1,5 +1,5 @@
 name: Server-Tools
-version: '2.0'
+version: '3.0'
 main: ServerTools.ServerTools
 description: Commands for WSN by SamTech
 author: SamTech
@@ -104,6 +104,11 @@ commands:
     description: View the server rules
     usage: /<command> [page]
     permission: servertools.rules
+  #afk
+  afk:
+    description: Toggle AFK status.
+    usage: /afk
+    permission: servertools.afk
 
 #--------------------------------------------------------------------------------Perms v  Commands^
 permissions:
@@ -236,3 +241,7 @@ permissions:
   servertools.rules.reload:
     description: Allows reloading of the help configuration
     default: op
+  #akf
+  servertools.afk:
+    description: Allows use of the AFK command
+    default: true
