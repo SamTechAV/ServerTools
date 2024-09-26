@@ -6,12 +6,12 @@ ServerTools is a comprehensive Minecraft server plugin designed to enhance serve
 
 ## Features
 
-- **Economy System**: Fully-featured economy with bank notes, balance top, and admin commands.
+- **Economy System**: Fully-featured economy with bank notes, balance top, and admin commands. (Requires Vault)
 - **Home Management**: Allow players to set, teleport to, and manage multiple homes.
 - **Teleportation**: TPA system with accept/deny functionality.
 - **Messaging**: Private messaging system with reply feature.
 - **Game Mode Management**: Quick commands for changing game modes.
-- **Tab Menu**: Customizable tab menu with animated headers and footers.
+- **Tab Menu**: Customizable tab menu with animated headers and footers. (Requires LuckPerms)
 - **AFK System**: Automatic AFK detection and status management.
 - **Server Rules**: Customizable in-game rules display.
 - **Help Menu**: Configurable help menu for player assistance.
@@ -26,26 +26,17 @@ ServerTools is a comprehensive Minecraft server plugin designed to enhance serve
 ## Optional Dependencies
 
 - [Vault](https://www.spigotmc.org/resources/vault.34315/) for economy features
-- [LuckPerms](https://luckperms.net/) for advanced permissions management
+- [LuckPerms](https://luckperms.net/) for custom tab menu
 
 ## Installation
 
-1. Download the latest version of ServerTools from [Spigot](https://www.spigotmc.org/resources/servertools.XXXXX/)
-2. Place the JAR file in your server's `plugins` folder
-3. Restart your server
-4. Configure the plugin using the generated configuration files in `plugins/ServerTools/`
+For detailed installation instructions, please see our [Installation Guide](https://github.com/SamTechAV/ServerTools/wiki/Installation-Guide).
+
+For a quick setup, check out our [Quick Start Guide](https://github.com/SamTechAV/ServerTools/wiki/Quick-Start-Guide).
 
 ## Configuration
 
-ServerTools is highly configurable. Key configuration files include:
-
-- `config.yml`: Main configuration file
-- `config/tabmenu.yml`: Tab menu settings
-- `config/rules.yml`: Server rules configuration
-- `config/help.yml`: Help menu configuration
-- `config/LegacyCombat.yml`: Legacy combat settings
-
-For detailed configuration information, please refer to our [Complete Configuration Guide](https://github.com/SamTechAV/ServerTools/wiki/Complete-Configuration-Guide).
+ServerTools is highly configurable. For detailed configuration information, please refer to our [Complete Configuration Guide](https://github.com/SamTechAV/ServerTools/wiki/Complete-Configuration-Guide).
 
 ## Commands and Permissions
 
