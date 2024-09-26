@@ -41,35 +41,42 @@ This plugin requires the following dependencies:
 | `/sethome`                 | Set a home location                                 | `servertools.home.sethome`               |
 | `/delhome`                 | Delete a home                                       | `servertools.home.delhome`               |
 | `/homes` or `/listhomes`   | List your homes                                     | `servertools.home.homes`                 |
+| `/afk`                     | Toggle AFK status.                                  | `servertools.afk`                        |
+| `/rules`                   | View the server rules                               | `servertools.home.delhome`               |
+| `/help`                    | Shows the help menu                                 | `servertools.home.homes`                 |
 
 ## Permissions
-| Permission                           | Description                                          |
-|--------------------------------------|------------------------------------------------------|
-| `servertools.gamemode.*`            | Allows access to all gamemode commands                |
-| `servertools.gamemode.creative`     | Allows changing to creative mode                      |
-| `servertools.gamemode.survival`     | Allows changing to survival mode                      |
-| `servertools.gamemode.spectator`    | Allows changing to spectator mode                     |
-| `servertools.gamemode.adventure`     | Allows changing to adventure mode                     |
-| `servertools.tpa.*`                  | Allows access to all TPA commands                    |
-| `servertools.tpa.send`               | Allows sending teleport requests                      |
-| `servertools.tpa.sendhere`           | Allows sending teleport-here requests                 |
-| `servertools.tpa.accept`             | Allows accepting teleport requests                    |
-| `servertools.tpa.deny`               | Allows denying teleport requests                      |
-| `servertools.message.*`               | Allows access to all messaging commands               |
-| `servertools.message.send`            | Allows sending private messages                       |
-| `servertools.message.reply`           | Allows replying to private messages                   |
-| `servertools.economy.*`               | Allows access to all economy commands                 |
-| `servertools.economy.pay`            | Allows paying other players                           |
-| `servertools.economy.balance`        | Allows checking balance                               |
-| `servertools.economy.withdraw`       | Allows withdrawing money                              |
-| `servertools.economy.baltop`         | Allows viewing top balances                           |
-| `servertools.economy.addmoney`       | Allows adding money to a player's balance             |
-| `servertools.economy.removemoney`    | Allows removing money from a player's balance         |
-| `servertools.home.*`                 | Allows access to all home commands (sethome, home, delhome, homes                           |
-| `servertools.home.sethome`           | Allows viewing top balances                           |
-| `servertools.home.home`              | Allows adding money to a player's balance             |
-| `servertools.home.delhome`           | Allows removing money from a player's balance         |
-| `servertools.home.homes`             | Allows toggling flight mode                           |
+| Permission                           | Description                                          | Default  |
+|--------------------------------------|------------------------------------------------------|----------|
+| `servertools.gamemode.*`            | Allows access to all gamemode commands (creative, survival, spectator, adventure)               |   `op`
+| `servertools.gamemode.creative`     | Allows changing to creative mode                      |  `op`
+| `servertools.gamemode.survival`     | Allows changing to survival mode                      |`op`
+| `servertools.gamemode.spectator`    | Allows changing to spectator mode                     |`op`
+| `servertools.gamemode.adventure`     | Allows changing to adventure mode                     |`default`
+| `servertools.tpa.*`                  | Allows access to all TPA commands (send, sendhere, accept, deny)                   | `op`
+| `servertools.tpa.send`               | Allows sending teleport requests                      |`default`
+| `servertools.tpa.sendhere`           | Allows sending teleport-here requests                 |`default`
+| `servertools.tpa.accept`             | Allows accepting teleport requests                    |`default`
+| `servertools.tpa.deny`               | Allows denying teleport requests                      |`default`
+| `servertools.message.*`               | Allows access to all messaging commands (send, reply)              |`op`
+| `servertools.message.send`            | Allows sending private messages                       |`default`
+| `servertools.message.reply`           | Allows replying to private messages                   |`default`
+| `servertools.economy.*`               | Allows access to all economy commands (pay, balance, withdraw, baltop) |`op`
+| `servertools.economy.pay`            | Allows paying other players                           | `default`
+| `servertools.economy.balance`        | Allows checking balance                               |`default`
+| `servertools.economy.withdraw`       | Allows withdrawing money                              |`default`
+| `servertools.economy.baltop`         | Allows viewing top balances                           |`default`
+| `servertools.economy.addmoney`       | Allows adding money to a player's balance             |`op`
+| `servertools.economy.removemoney`    | Allows removing money from a player's balance         |`op`
+| `servertools.home.*`                 | Allows access to all home commands (sethome, home, delhome, homes, addmoney, removemoney)   |`op`
+| `servertools.home.sethome`           | Allows viewing top balances                           |`default`
+| `servertools.home.home`              | Allows adding money to a player's balance             |`default`
+| `servertools.home.delhome`           | Allows removing money from a player's balance         |`default`
+| `servertools.home.homes`             | Allows listing homes                                  |`default`
+| `servertools.home.help`             | Allows access to the /help command                    |`default`
+| `servertools.home.rules`             | Allows access to the /rules command                   |`default`
+| `servertools.home.afk`             | Allows use of the AFK command                         |`default`
+
 
 
 ## Installation
@@ -82,6 +89,21 @@ This plugin requires the following dependencies:
 The plugin can be configured in the `config.yml` file. Below are the defult configurable options:
 
 ```yaml
+features:
+  economy: true
+  bankNotes: true
+  tabMenu: true
+  homeManager: true
+  joinLeaveMessages: true
+  gameModeCommands: true
+  teleportCommands: true
+  messagingCommands: true
+  flyCommand: true
+  helpCommand: true
+  rulesCommand: true
+  afk: true
+  legacyCombat: false #1.8 combat
+
 joinandleave:
   # Customize the join message
   joinMessage: |
@@ -154,17 +176,6 @@ economy:
     depositSuccess: "<green>Successfully deposited %amount% into your account."
     depositFailed: "<red>Failed to deposit the bank note. Please try again."
 
-tab-menu:
-  update-interval: 20 # Update interval in ticks (20 ticks = 1 second)
-  header: "<gold>Welcome to <gradient:red:blue>Your Server</gradient>!"
-  footer: "<gray>Players online: <green>%server_online%</green>"
-  name-format: "<group_color><group_name> <white>| "
-  group-colors:
-    default: "<gray>"
-    vip: "<green>"
-    admin: "<red>"
-    owner: "<dark_red>"
-
 fly:
   playerOnly: "<red>This command can only be used by players!"
   noPermission: "<red>You don't have permission to use this command."
@@ -193,3 +204,13 @@ home:
   homeLimitReached: "<red>You have reached the maximum number of homes."
   listHomes: "<green>Your homes: %homes%"
   noHomesSet: "<red>You have not set any homes yet."
+
+# AFK Module Configuration
+afk:
+  auto-afk: true
+  auto-afk-time: 300 # Time in seconds before a player is set to AFK automatically
+  messages:
+    afk-enabled: "<yellow>You are now AFK."
+    afk-disabled: "<yellow>You are no longer AFK."
+    player-afk: "<yellow>%player_name% is now AFK."
+    player-returned: "<yellow>%player_name% is no longer AFK."
