@@ -109,6 +109,10 @@ commands:
     description: Toggle AFK status.
     usage: /afk
     permission: servertools.afk
+  servertools:
+    description: Main command for ServerTools
+    usage: /servertools reload
+    permission: servertools.reload
 
 #--------------------------------------------------------------------------------Perms v  Commands^
 permissions:
@@ -245,3 +249,7 @@ permissions:
   servertools.afk:
     description: Allows use of the AFK command
     default: true
+  #Reload
+  servertools.reload:
+    description: reloads plugin
+    default: op

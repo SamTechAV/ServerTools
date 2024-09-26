@@ -11,6 +11,7 @@ features:
   helpCommand: true
   rulesCommand: true
   afk: true
+  legacyCombat: false #1.8 combat
 
 joinandleave:
   # Customize the join message

@@ -21,6 +21,7 @@ public class ServerTools extends JavaPlugin implements Listener {
     private TabMenuManager tabMenuManager;
     private HomeManager homeManager;
     private AFKManager afkManager;
+    private LegacyCombatManager legacyCombatManager;
 
     @Override
     public void onEnable() {
@@ -44,6 +45,9 @@ public class ServerTools extends JavaPlugin implements Listener {
     public void onDisable() {
         if (economyManager != null) {
             economyManager.saveData();
+        }
+        if (legacyCombatManager != null) {
+            legacyCombatManager.disable();
         }
 
         getLogger().info("ServerTools plugin disabled.");
@@ -84,6 +88,10 @@ public class ServerTools extends JavaPlugin implements Listener {
 
         if (config.getBoolean("features.bankNotes", true)) {
             bankNoteManager = new BankNoteManager(this);
+        }
+
+        if (config.getBoolean("features.legacyCombat", false)) {
+            enableLegacyCombat();
         }
     }
 
@@ -179,10 +187,38 @@ public class ServerTools extends JavaPlugin implements Listener {
         return afkManager;
     }
 
+    public LegacyCombatManager getLegacyCombatManager() {
+        return legacyCombatManager;
+    }
+
     public void reloadPluginConfig() {
         reloadConfig();
         config = getConfig();
-        // Reload any other configuration-dependent components
+
+        // Check if legacy combat setting has changed
+        boolean legacyCombatEnabled = config.getBoolean("features.legacyCombat", false);
+        if (legacyCombatEnabled && legacyCombatManager == null) {
+            enableLegacyCombat();
+        } else if (!legacyCombatEnabled && legacyCombatManager != null) {
+            disableLegacyCombat();
+        }
+
+        // Reload other configuration-dependent components here
+    }
+
+    public void enableLegacyCombat() {
+        if (legacyCombatManager == null) {
+            legacyCombatManager = new LegacyCombatManager(this);
+            getLogger().info("Legacy combat system enabled.");
+        }
+    }
+
+    public void disableLegacyCombat() {
+        if (legacyCombatManager != null) {
+            legacyCombatManager.disable();
+            legacyCombatManager = null;
+            getLogger().info("Legacy combat system disabled.");
+        }
     }
 
     public FileConfiguration getCustomConfig(String filename) {

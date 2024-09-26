@@ -1,0 +1,23 @@
+# Legacy Combat Configuration
+
+# Base damage values for weapons
+weapon_damage:
+  WOODEN_SWORD: 4
+  GOLDEN_SWORD: 4
+  STONE_SWORD: 5
+  IRON_SWORD: 6
+  DIAMOND_SWORD: 7
+  NETHERITE_SWORD: 8
+  WOODEN_AXE: 3
+  GOLDEN_AXE: 3
+  STONE_AXE: 4
+  IRON_AXE: 5
+  DIAMOND_AXE: 6
+  NETHERITE_AXE: 7
+  DEFAULT: 1  # Default damage for fists or other items
+
+# Disable sweep attacks (true/false)
+disable_sweep_attacks: true
+
+# Critical hit multiplier
+critical_hit_multiplier: 1.5
