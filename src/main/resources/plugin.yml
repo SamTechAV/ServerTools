@@ -5,7 +5,11 @@ description: Commands for WSN by SamTech
 author: SamTech
 website: https://Sam-Tech.net
 api-version: '1.21'
-softdepend: [Vault, PlaceholderAPI, LuckPerms]
+softdepend:
+  - Vault
+  - LuckPerms
+depend:
+  - PlaceholderAPI
 
 commands:
   # Game mode shortener
@@ -109,10 +113,6 @@ commands:
     description: Toggle AFK status.
     usage: /afk
     permission: servertools.afk
-  servertools:
-    description: Main command for ServerTools
-    usage: /servertools reload
-    permission: servertools.reload
 
 #--------------------------------------------------------------------------------Perms v  Commands^
 permissions:
@@ -250,6 +250,3 @@ permissions:
     description: Allows use of the AFK command
     default: true
   #Reload
-  servertools.reload:
-    description: reloads plugin
-    default: op
