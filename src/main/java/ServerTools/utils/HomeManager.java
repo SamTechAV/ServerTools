@@ -20,11 +20,19 @@ public class HomeManager {
 
     public HomeManager(ServerTools plugin) {
         this.plugin = plugin;
-        homesFile = new File(plugin.getDataFolder(), "storage/homes.yml");
+
+        // Define the file path where homes.yml will be stored
+        File storageDir = new File(plugin.getDataFolder(), "storage");
+        if (!storageDir.exists()) {
+            storageDir.mkdirs(); // Create the directory if it doesn't exist
+        }
+
+        homesFile = new File(storageDir, "homes.yml");
         if (!homesFile.exists()) {
             try {
-                homesFile.createNewFile();
+                homesFile.createNewFile(); // Create the file if it doesn't exist
             } catch (IOException e) {
+                plugin.getLogger().severe("Could not create homes.yml file!");
                 e.printStackTrace();
             }
         }

@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 public class JoinLeaveListener implements Listener {
 
     private final ServerTools plugin;
-    private final EconomyManager economyManager;
     private final MiniMessage miniMessage;
 
     private static final Pattern URL_PATTERN = Pattern.compile("(https?://\\S+)");
@@ -24,13 +23,15 @@ public class JoinLeaveListener implements Listener {
 
     public JoinLeaveListener(ServerTools plugin) {
         this.plugin = plugin;
-        this.economyManager = plugin.getEconomyManager();
         this.miniMessage = MiniMessage.miniMessage();
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        economyManager.initializePlayer(event.getPlayer());
+        EconomyManager economyManager = plugin.getEconomyManager();
+        if (economyManager != null && plugin.isVaultEnabled()) {
+            economyManager.initializePlayer(event.getPlayer());
+        }
 
         if (plugin.getConfig().getBoolean("features.joinLeaveMessages", true)) {
             String joinMessage = plugin.getConfig().getString("joinandleave.joinMessage", "<green>%player_name% has joined the server!");

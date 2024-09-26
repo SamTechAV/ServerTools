@@ -1,7 +1,7 @@
-name: Server-Tools
+name: ServerTools
 version: '3.0'
 main: ServerTools.ServerTools
-description: Commands for WSN by SamTech
+description: A versatile server management plugin
 author: Sam
 website: https://Sam-Tech.net (comming soon)
 api-version: '1.21'
@@ -232,16 +232,11 @@ permissions:
   servertools.help:
     description: Allows access to the /help command
     default: true
-  servertools.help.reload:
-    description: Allows reloading of the help configuration
-    default: op
   # Rules
   servertools.rules:
-    description: Allows access to the /help command
+    description: Allows access to the /rules command
     default: true
-  servertools.rules.reload:
-    description: Allows reloading of the help configuration
-    default: op
+
   #akf
   servertools.afk:
     description: Allows use of the AFK command
